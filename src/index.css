@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(to bottom, #f8fafc, #ffffff);
+  color: #0f172a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+  border-radius: 16px;
+}
+
+button, a {
+  transition: all 0.3s ease;
+}
+
+button:hover, a:hover {
+  transform: translateY(-2px);
+}
+
+section {
+  scroll-margin-top: 100px;
+}
+
+.card-hover:hover {
+  transform: translateY(-6px);
+  transition: 0.3s ease;
+}
+
+.glass {
+  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.7);
+}
+
+.whatsapp-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #25D366;
+  color: white;
+  padding: 14px 18px;
+  border-radius: 999px;
+  font-weight: bold;
+  z-index: 9999;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.dark body {
+  background: #020617;
+  color: white;
+}
