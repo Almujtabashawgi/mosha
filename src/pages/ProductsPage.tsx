@@ -7,7 +7,7 @@ import { supabase } from "../supabase";
 
 const ProductsPage = () => {
   const { t, i18n } = useTranslation();
-  const isRTL = i18n.language === 'ar';
+  const isRTL = i18n.language.startsWith('ar');
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<any[]>([]);
   const fetchProducts = async () => {
@@ -18,6 +18,8 @@ const ProductsPage = () => {
 
   if (!error) {
     setProducts(data || []);
+    console.log("LANG:", i18n.language);
+console.log("FIRST PRODUCT:", data?.[0]);
   }
 };
 useEffect(() => {
@@ -70,9 +72,9 @@ useEffect(() => {
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
     const matchesSearch = 
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.nameAr.includes(searchQuery) ||
+      product.namear?.includes(searchQuery) ||
       product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.descriptionAr.includes(searchQuery);
+      product.descriptionar?.includes(searchQuery);
     return matchesCategory && matchesSearch;
   });
 
@@ -192,7 +194,7 @@ useEffect(() => {
                   <div className="relative h-64 overflow-hidden">
                     <img
                       src={product.image}
-                      alt={isRTL ? product.nameAr : product.name}
+                      alt={isRTL ? product.namear : product.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute top-4 left-4">
@@ -205,16 +207,16 @@ useEffect(() => {
                   </div>
                   <div className="p-6">
                     <h3 className="text-lg font-bold text-gray-900 mb-2">
-                      {isRTL ? product.nameAr : product.name}
+                      {isRTL ? product.namear : product.name}
                     </h3>
                     <p className="text-gray-600 text-sm line-clamp-2 mb-4">
-                      {isRTL ? product.descriptionAr : product.description}
+                      {isRTL ? product.descriptionar : product.description}
                     </p>
                     {product.specifications && (
                       <div className="mb-4">
                         <p className="text-xs text-gray-500 mb-1">{t('specifications')}</p>
                         <p className="text-sm text-gray-700">
-                          {isRTL ? product.specificationsAr : product.specifications}
+                          {isRTL ? product.specificationsar : product.specifications}
                         </p>
                       </div>
                     )}
@@ -240,7 +242,7 @@ useEffect(() => {
                   <div className="md:w-72 h-64 md:h-auto relative">
                     <img
                       src={product.image}
-                      alt={isRTL ? product.nameAr : product.name}
+                      alt={isRTL ? product.namear : product.name}
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute top-4 left-4">
@@ -254,17 +256,17 @@ useEffect(() => {
                   <div className="flex-1 p-6">
                     <div className={`flex flex-col h-full ${isRTL ? 'text-right' : 'text-left'}`}>
                       <h3 className="text-xl font-bold text-gray-900 mb-2">
-                        {isRTL ? product.nameAr : product.name}
+                        {isRTL ? product.namear : product.name}
                       </h3>
                       <p className="text-gray-600 mb-4 flex-1">
-                        {isRTL ? product.descriptionAr : product.description}
+                        {isRTL ? product.descriptionar : product.description}
                       </p>
                       <div className="grid md:grid-cols-2 gap-4 mb-4">
                         {product.specifications && (
                           <div>
                             <p className="text-xs text-gray-500 mb-1">{t('specifications')}</p>
                             <p className="text-sm text-gray-700">
-                              {isRTL ? product.specificationsAr : product.specifications}
+                              {isRTL ? product.specificationsar : product.specifications}
                             </p>
                           </div>
                         )}

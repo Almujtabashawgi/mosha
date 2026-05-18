@@ -30,9 +30,21 @@ const AdminPage = () => {
   });
   const fetchProducts = async () => {
   const { data, error } = await supabase
-    .from('products')
-    .select('*')
-    .order('id', { ascending: false });
+  .from('products')
+  .select(`
+    id,
+    name,
+    namear,
+    description,
+    descriptionar,
+    category,
+    price,
+    image,
+    specifications,
+    specificationsar,
+    origin
+  `)
+  .order('id', { ascending: false });
 
   if (error) {
     console.log(error);
@@ -87,14 +99,14 @@ useEffect(() => {
       setEditingProduct(product);
       setFormData({
         name: product.name,
-        nameAr: product.nameAr,
+        nameAr: product.namear,
         description: product.description,
-        descriptionAr: product.descriptionAr,
+        descriptionAr: product.descriptionar,
         category: product.category,
         price: product.price || '',
         image: product.image,
         specifications: product.specifications || '',
-        specificationsAr: product.specificationsAr || '',
+        specificationsAr: product.specificationsar || '',
         origin: product.origin || ''
       });
     } else {
@@ -192,6 +204,35 @@ closeModal();
     await fetchProducts();
   }
 };
+const handleImageUpload = async (
+  e: React.ChangeEvent<HTMLInputElement>
+) => {
+  const file = e.target.files?.[0];
+
+  if (!file) return;
+
+  const fileName = `${Date.now()}-${file.name}`;
+
+  const { error } = await supabase.storage
+    .from('products')
+    .upload(fileName, file);
+
+  if (error) {
+    console.log(error);
+    return;
+  }
+
+  const { data } = supabase.storage
+    .from('products')
+    .getPublicUrl(fileName);
+
+  console.log(data.publicUrl);
+
+  setFormData((prev) => ({
+    ...prev,
+    image: data.publicUrl,
+  }));
+};
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -277,10 +318,10 @@ closeModal();
                           />
                           <div>
                             <p className="font-medium text-gray-900">
-                              {isRTL ? product.nameAr : product.name}
+                              {isRTL ? (product.namear || product.name) : (product.name || product.namear)}
                             </p>
                             <p className="text-sm text-gray-500 truncate max-w-xs">
-                              {isRTL ? product.descriptionAr : product.description}
+                              {isRTL ? (product.descriptionar || product.description) : (product.description || product.descriptionar)}
                             </p>
                           </div>
                         </div>
@@ -459,43 +500,19 @@ closeModal();
   </label>
 
   <input
-    type="file"
-    accept="image/*"
-    onChange={async (e) => {
-      const file = e.target.files?.[0];
+  type="file"
+  accept="image/*"
+  onChange={handleImageUpload}
+  className="w-full"
+/>
 
-      if (!file) return;
-
-      const fileName = `${Date.now()}-${file.name}`;
-
-      const { error } = await supabase.storage
-        .from('products')
-        .upload(fileName, file);
-
-      if (error) {
-        console.log(error);
-        return;
-      }
-
-      const { data } = supabase.storage
-        .from('products')
-        .getPublicUrl(fileName);
-
-      setFormData({
-        ...formData,
-        image: data.publicUrl,
-      });
-    }}
-    className="w-full"
+{formData.image && (
+  <img
+    src={formData.image}
+    alt="preview"
+    className="w-32 h-32 object-cover rounded-lg mt-4"
   />
-
-  {formData.image && (
-    <img
-      src={formData.image}
-      alt="Preview"
-      className="mt-4 w-32 h-32 object-cover rounded-lg"
-    />
-  )}
+)}
 </div>
 
               {/* Specifications */}

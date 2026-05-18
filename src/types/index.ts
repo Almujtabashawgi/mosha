@@ -1,16 +1,15 @@
 export interface Product {
-  id: string;
+  id: number;
   name: string;
-  nameAr: string;
+  namear: string;
   description: string;
-  descriptionAr: string;
-  category: 'heavy-machinery' | 'medical-supplies' | 'general-goods';
+  descriptionar: string;
+  category: string;
   price?: string;
   image: string;
   specifications?: string;
-  specificationsAr?: string;
+  specificationsar?: string;
   origin?: string;
-  createdAt: number;
 }
 
 export interface ContactForm {

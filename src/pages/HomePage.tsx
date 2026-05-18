@@ -7,7 +7,7 @@ import { supabase } from "../supabase";
 
 const HomePage = () => {
   const { t, i18n } = useTranslation();
-  const isRTL = i18n.language === 'ar';
+  const isRTL = i18n.language.startsWith('ar');
   const [products, setProducts] = useState<any[]>([]);
   const fetchProducts = async () => {
   const { data, error } = await supabase

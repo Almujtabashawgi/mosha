@@ -147,23 +147,6 @@ const AdminLoginPage = () => {
               )}
             </button>
           </form>
-
-          {/* بوكس بيانات التجربة المطور هندسياً وبصرياً */}
-          <div className="mt-6 p-4 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100/50 border border-slate-100 shadow-inner">
-            <p className={`text-xs font-bold text-slate-500 uppercase tracking-wider ${isRTL ? 'text-right' : 'text-left'}`}>
-              {isRTL ? 'بيانات الوصول التجريبية' : 'Demo Authorization Credentials'}
-            </p>
-            <div className={`mt-2 flex flex-col gap-1 text-sm text-slate-600 ${isRTL ? 'text-right' : 'text-left'}`}>
-              <div>
-                <span className="font-medium text-slate-400">{isRTL ? 'اسم المستخدم: ' : 'Username: '}</span>
-                <code className="px-1.5 py-0.5 bg-white border border-slate-200 rounded font-mono text-xs font-bold text-blue-600 select-all">{adminConfig.username}</code>
-              </div>
-              <div>
-                <span className="font-medium text-slate-400">{isRTL ? 'كلمة المرور: ' : 'Password: '}</span>
-                <code className="px-1.5 py-0.5 bg-white border border-slate-200 rounded font-mono text-xs font-bold text-blue-600 select-all">{adminConfig.password}</code>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* رجوع للرئيسية بتأثير مريح للعين */}
