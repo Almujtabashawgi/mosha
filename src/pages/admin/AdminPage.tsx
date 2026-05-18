@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
+import { supabase } from "../../supabase";
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore, useProductStore } from '../../store';
+import { useAuthStore } from '../../store';
 import { Product, Category, CATEGORIES } from '../../types';
 import { Plus, Edit2, Trash2, X, LogOut, Package } from 'lucide-react';
 
 const AdminPage = () => {
+  
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
   const navigate = useNavigate();
   const { isAuthenticated, logout } = useAuthStore();
-  const { products, addProduct, updateProduct, deleteProduct } = useProductStore();
+  const [products, setProducts] = useState<any[]>([]);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -19,13 +21,49 @@ const AdminPage = () => {
     nameAr: '',
     description: '',
     descriptionAr: '',
-    category: 'heavy-machinery' as Category,
+    category: 'heavy-machinery',
     price: '',
     image: '',
     specifications: '',
     specificationsAr: '',
     origin: ''
   });
+  const fetchProducts = async () => {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .order('id', { ascending: false });
+
+  if (error) {
+    console.log(error);
+    return;
+  }
+
+  setProducts(data || []);
+};
+
+useEffect(() => {
+  fetchProducts();
+
+  const channel = supabase
+    .channel('products-live-admin')
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'products',
+      },
+      () => {
+        fetchProducts();
+      }
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}, []);
 
   // Use useEffect for navigation to avoid calling navigate during render
   useEffect(() => {
@@ -82,23 +120,78 @@ const AdminPage = () => {
     setEditingProduct(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (editingProduct) {
-      updateProduct(editingProduct.id, formData);
-    } else {
-      addProduct(formData);
-    }
-    
-    closeModal();
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-  const handleDelete = (id: string) => {
-    if (window.confirm(t('confirmDelete'))) {
-      deleteProduct(id);
+  console.log(formData);
+
+ if (editingProduct) {
+
+  const { error } = await supabase
+    .from('products')
+    .update({
+      name: formData.name,
+      namear: formData.nameAr,
+      description: formData.description,
+      descriptionar: formData.descriptionAr,
+      category: formData.category,
+      price: formData.price,
+      image: formData.image,
+      specifications: formData.specifications,
+      specificationsar: formData.specificationsAr,
+      origin: formData.origin
+    })
+    .eq('id', editingProduct.id);
+
+  if (error) {
+    console.log(error);
+    return;
+  }
+
+} else {
+
+  const { error } = await supabase
+    .from('products')
+    .insert([{
+      name: formData.name,
+      namear: formData.nameAr,
+      description: formData.description,
+      descriptionar: formData.descriptionAr,
+      category: formData.category,
+      price: formData.price,
+      image: formData.image,
+      specifications: formData.specifications,
+      specificationsar: formData.specificationsAr,
+      origin: formData.origin
+    }]);
+
+  if (error) {
+    console.log(error);
+    return;
+  }
+}
+
+await fetchProducts();
+
+closeModal();
+};
+
+ const handleDelete = async (id: number) => {
+  if (window.confirm(t('confirmDelete'))) {
+
+    const { error } = await supabase
+      .from('products')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.log(error);
+      return;
     }
-  };
+
+    await fetchProducts();
+  }
+};
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -361,19 +454,49 @@ const AdminPage = () => {
 
               {/* Image URL */}
               <div>
-                <label className={`block text-sm font-medium text-gray-700 mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
-                  {t('image')} URL *
-                </label>
-                <input
-                  type="url"
-                  name="image"
-                  required
-                  value={formData.image}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all ${isRTL ? 'text-right' : 'text-left'}`}
-                  placeholder="https://example.com/image.jpg"
-                />
-              </div>
+  <label className={`block text-sm font-medium text-gray-700 mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+    Upload Image *
+  </label>
+
+  <input
+    type="file"
+    accept="image/*"
+    onChange={async (e) => {
+      const file = e.target.files?.[0];
+
+      if (!file) return;
+
+      const fileName = `${Date.now()}-${file.name}`;
+
+      const { error } = await supabase.storage
+        .from('products')
+        .upload(fileName, file);
+
+      if (error) {
+        console.log(error);
+        return;
+      }
+
+      const { data } = supabase.storage
+        .from('products')
+        .getPublicUrl(fileName);
+
+      setFormData({
+        ...formData,
+        image: data.publicUrl,
+      });
+    }}
+    className="w-full"
+  />
+
+  {formData.image && (
+    <img
+      src={formData.image}
+      alt="Preview"
+      className="mt-4 w-32 h-32 object-cover rounded-lg"
+    />
+  )}
+</div>
 
               {/* Specifications */}
               <div className="grid md:grid-cols-2 gap-4">

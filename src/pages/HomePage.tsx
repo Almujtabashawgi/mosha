@@ -1,13 +1,46 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Factory, Stethoscope, Package, Globe, Clock, Award, Users } from 'lucide-react';
-import { useProductStore } from '../store';
 import { siteConfig } from '../data/content';
+import { useEffect, useState } from "react";
+import { supabase } from "../supabase";
 
 const HomePage = () => {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
-  const { products } = useProductStore();
+  const [products, setProducts] = useState<any[]>([]);
+  const fetchProducts = async () => {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .order('id', { ascending: false });
+
+  if (!error) {
+    setProducts(data || []);
+  }
+};
+useEffect(() => {
+  fetchProducts();
+
+  const channel = supabase
+    .channel('products-live')
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'products',
+      },
+      () => {
+        fetchProducts();
+      }
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}, []);
 
   const latestProducts = products.slice(0, 3);
   const company = siteConfig.company;

@@ -2,14 +2,46 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import { Filter, Search, Grid, List, ArrowRight } from 'lucide-react';
-import { useProductStore } from '../store';
 import { Category, CATEGORIES } from '../types';
+import { supabase } from "../supabase";
 
 const ProductsPage = () => {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
   const [searchParams, setSearchParams] = useSearchParams();
-  const { products } = useProductStore();
+  const [products, setProducts] = useState<any[]>([]);
+  const fetchProducts = async () => {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .order('id', { ascending: false });
+
+  if (!error) {
+    setProducts(data || []);
+  }
+};
+useEffect(() => {
+  fetchProducts();
+
+  const channel = supabase
+    .channel('products-live')
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'products',
+      },
+      () => {
+        fetchProducts();
+      }
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}, []);
   
   const [selectedCategory, setSelectedCategory] = useState<Category | 'all'>(
     (searchParams.get('category') as Category) || 'all'
