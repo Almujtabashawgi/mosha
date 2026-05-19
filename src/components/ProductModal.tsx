@@ -11,9 +11,11 @@ export default function ProductModal({ product, onClose }: Props) {
   const isRTL = i18n.language.startsWith("ar");
 
   const images =
-    product.images && product.images.length > 0
-      ? product.images
-      : [product.image];
+  typeof product.images === "string"
+    ? product.images.split(",").map((img:string)=>img.trim())
+    : product.images && product.images.length > 0
+    ? product.images
+    : [product.image];
 
   const [activeImage, setActiveImage] = useState(images[0]);
 
