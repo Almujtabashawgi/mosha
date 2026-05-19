@@ -21,7 +21,13 @@ const ContactPage = () => {
     setIsSubmitting(true);
     
     // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await fetch("/api/send-email", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(formData),
+});
     
     setIsSubmitting(false);
     setIsSubmitted(true);
