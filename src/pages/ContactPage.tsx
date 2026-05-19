@@ -198,7 +198,7 @@ const ContactPage = () => {
                         {isRTL ? 'الخرطوم، السودان' : 'Khartoum, Sudan'}
                       </p>
                       <p className="text-gray-500 text-sm">
-                        {isRTL ? 'شارع الرئيسي، حي المعمورة' : 'Main Street, Al-Mamoura District'}
+                        {isRTL ? 'شارع الإنقاذ, بحري' : 'Alengaz Street, Bahri'}
                       </p>
                     </div>
                   </div>
@@ -209,8 +209,8 @@ const ContactPage = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1">{t('phoneNumber')}</h3>
-                      <p className="text-gray-600">+249 123 456 789</p>
-                      <p className="text-gray-500 text-sm">+249 123 456 790</p>
+                      <p className="text-gray-600">+249 901 388 888</p>
+                      <p className="text-gray-500 text-sm">+249 123 801 813</p>
                     </div>
                   </div>
 
@@ -220,8 +220,8 @@ const ContactPage = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1">Email</h3>
-                      <p className="text-gray-600">info@mosha-trading.com</p>
-                      <p className="text-gray-500 text-sm">export@mosha-trading.com</p>
+                      <p className="text-gray-600">info@moshaltd.com</p>
+                      <p className="text-gray-500 text-sm">sales@moshaltd.com</p>
                     </div>
                   </div>
 
