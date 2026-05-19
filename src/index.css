@@ -1,12 +1,9 @@
+/* لازم يكون أول سطر في الملف */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 html {
   scroll-behavior: smooth;
@@ -14,7 +11,7 @@ html {
 
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', Arial, sans-serif;
   background: linear-gradient(to bottom, #f8fafc, #ffffff);
   color: #0f172a;
 }
