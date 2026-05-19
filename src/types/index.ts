@@ -7,23 +7,27 @@ export interface Product {
   description: string;
   descriptionAr: string;
 
-  // وصف طويل يظهر في الـ popup
   details?: string;
   detailsAr?: string;
 
   category: string;
   price?: string;
 
-  // صورة الكرت الأساسية
   image: string;
-
-  // 🔥 صور متعددة للـ modal
   images?: string[];
-
-  // 🔥 فيديو يوتيوب اختياري
   video?: string;
 
   specifications?: string;
   specificationsAr?: string;
   origin?: string;
 }
+
+// ⭐️ هذا هو الجزء الناقص اللي سبب المشكلة
+export const CATEGORIES = [
+  "All",
+  "Heavy Machinery",
+  "Medical Supplies",
+  "Generators",
+  "Spare Parts",
+  "General Goods"
+];
