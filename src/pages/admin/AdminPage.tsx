@@ -32,28 +32,16 @@ const AdminPage = () => {
 });
   const fetchProducts = async () => {
   const { data, error } = await supabase
-  .from('products')
-  .select(`
-  id,
-  name,
-  namear,
-  description,
-  descriptionar,
-  category,
-  price,
-  image,
-  images,  -- 👈 اضف دي
-  specifications,
-  specificationsar,
-  origin
-`)
-  .order('id', { ascending: false });
+    .from('products')
+    .select('*') // 🔥🔥🔥 بدل الأعمدة كلها
+    .order('id', { ascending: false });
 
   if (error) {
-    console.log(error);
+    console.log("FETCH ERROR:", error);
     return;
   }
 
+  console.log("ADMIN DATA:", data); // مهم للتأكد
   setProducts(data || []);
 };
 
