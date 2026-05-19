@@ -1,15 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import { Filter, Search, Grid, List, ArrowRight } from 'lucide-react';
 import { Category, CATEGORIES } from '../types';
 import { supabase } from "../supabase";
+import ProductModal from "../components/ProductModal";
 
 const ProductsPage = () => {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language.startsWith('ar');
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<any[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const fetchProducts = async () => {
   const { data, error } = await supabase
     .from('products')
@@ -40,6 +42,7 @@ useEffect(() => {
     )
     .subscribe();
 
+  
   return () => {
     supabase.removeChannel(channel);
   };
@@ -188,9 +191,10 @@ useEffect(() => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredProducts.map((product) => (
                 <div
-                  key={product.id}
-                  className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100"
-                >
+  key={product.id}
+  onClick={() => setSelectedProduct(product)}
+  className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100 cursor-pointer"
+>
                   <div className="relative h-64 overflow-hidden">
                     <img
                       src={product.image}
@@ -236,9 +240,10 @@ useEffect(() => {
             <div className="space-y-6">
               {filteredProducts.map((product) => (
                 <div
-                  key={product.id}
-                  className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all border border-gray-100 flex flex-col md:flex-row"
-                >
+  key={product.id}
+  onClick={() => setSelectedProduct(product)}
+  className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all border border-gray-100 flex flex-col md:flex-row cursor-pointer"
+>
                   <div className="md:w-72 h-64 md:h-auto relative">
                     <img
                       src={product.image}
@@ -294,6 +299,12 @@ useEffect(() => {
           )}
         </div>
       </section>
+      {selectedProduct && (
+  <ProductModal
+    product={selectedProduct}
+    onClose={() => setSelectedProduct(null)}
+  />
+)}
     </div>
   );
 };

@@ -17,33 +17,36 @@ const AdminPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [formData, setFormData] = useState({
-    name: '',
-    nameAr: '',
-    description: '',
-    descriptionAr: '',
-    category: 'heavy-machinery',
-    price: '',
-    image: '',
-    specifications: '',
-    specificationsAr: '',
-    origin: ''
-  });
+  name: '',
+  nameAr: '',
+  description: '',
+  descriptionAr: '',
+  category: 'heavy-machinery',
+  price: '',
+  image: '',
+  images: [] as string[],
+  video: '', // 🔥 جديد
+  specifications: '',
+  specificationsAr: '',
+  origin: ''
+});
   const fetchProducts = async () => {
   const { data, error } = await supabase
   .from('products')
   .select(`
-    id,
-    name,
-    namear,
-    description,
-    descriptionar,
-    category,
-    price,
-    image,
-    specifications,
-    specificationsar,
-    origin
-  `)
+  id,
+  name,
+  namear,
+  description,
+  descriptionar,
+  category,
+  price,
+  image,
+  images,  -- 👈 اضف دي
+  specifications,
+  specificationsar,
+  origin
+`)
   .order('id', { ascending: false });
 
   if (error) {
@@ -95,37 +98,45 @@ useEffect(() => {
   };
 
   const openModal = (product?: Product) => {
-    if (product) {
-      setEditingProduct(product);
-      setFormData({
-        name: product.name,
-        nameAr: product.namear,
-        description: product.description,
-        descriptionAr: product.descriptionar,
-        category: product.category,
-        price: product.price || '',
-        image: product.image,
-        specifications: product.specifications || '',
-        specificationsAr: product.specificationsar || '',
-        origin: product.origin || ''
-      });
-    } else {
-      setEditingProduct(null);
-      setFormData({
-        name: '',
-        nameAr: '',
-        description: '',
-        descriptionAr: '',
-        category: 'heavy-machinery',
-        price: '',
-        image: '',
-        specifications: '',
-        specificationsAr: '',
-        origin: ''
-      });
-    }
-    setIsModalOpen(true);
-  };
+  if (product) {
+    setEditingProduct(product);
+
+    setFormData({
+      name: product.name || '',
+      nameAr: product.namear || '',
+      description: product.description || '',
+      descriptionAr: product.descriptionar || '',
+      category: product.category || 'heavy-machinery',
+      price: product.price || '',
+      image: product.image || '',
+      images: product.images || [],        // 🔥 كان ناقص
+      video: product.video || '',          // 🔥 كان ناقص
+      specifications: product.specifications || '',
+      specificationsAr: product.specificationsar || '',
+      origin: product.origin || ''
+    });
+
+  } else {
+    setEditingProduct(null);
+
+    setFormData({
+      name: '',
+      nameAr: '',
+      description: '',
+      descriptionAr: '',
+      category: 'heavy-machinery',
+      price: '',
+      image: '',
+      images: [],      // 🔥 مهم
+      video: '',       // 🔥 مهم
+      specifications: '',
+      specificationsAr: '',
+      origin: ''
+    });
+  }
+
+  setIsModalOpen(true);
+};
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -142,17 +153,19 @@ useEffect(() => {
   const { error } = await supabase
     .from('products')
     .update({
-      name: formData.name,
-      namear: formData.nameAr,
-      description: formData.description,
-      descriptionar: formData.descriptionAr,
-      category: formData.category,
-      price: formData.price,
-      image: formData.image,
-      specifications: formData.specifications,
-      specificationsar: formData.specificationsAr,
-      origin: formData.origin
-    })
+  name: formData.name,
+  namear: formData.nameAr,
+  description: formData.description,
+  descriptionar: formData.descriptionAr,
+  category: formData.category,
+  price: formData.price,
+  image: formData.image,
+  images: formData.images, // 👈 اضف السطر ده
+  video: formData.video,
+  specifications: formData.specifications,
+  specificationsar: formData.specificationsAr,
+  origin: formData.origin
+})
     .eq('id', editingProduct.id);
 
   if (error) {
@@ -165,17 +178,19 @@ useEffect(() => {
   const { error } = await supabase
     .from('products')
     .insert([{
-      name: formData.name,
-      namear: formData.nameAr,
-      description: formData.description,
-      descriptionar: formData.descriptionAr,
-      category: formData.category,
-      price: formData.price,
-      image: formData.image,
-      specifications: formData.specifications,
-      specificationsar: formData.specificationsAr,
-      origin: formData.origin
-    }]);
+  name: formData.name,
+  namear: formData.nameAr,
+  description: formData.description,
+  descriptionar: formData.descriptionAr,
+  category: formData.category,
+  price: formData.price,
+  image: formData.image,
+  images: formData.images, // 👈 اضف السطر ده
+  video: formData.video,
+  specifications: formData.specifications,
+  specificationsar: formData.specificationsAr,
+  origin: formData.origin
+}]);
 
   if (error) {
     console.log(error);
@@ -231,6 +246,35 @@ const handleImageUpload = async (
   setFormData((prev) => ({
     ...prev,
     image: data.publicUrl,
+  }));
+};
+const handleMultipleImagesUpload = async (
+  e: React.ChangeEvent<HTMLInputElement>
+) => {
+  const files = e.target.files;
+  if (!files) return;
+
+  const uploadedUrls: string[] = [];
+
+  for (const file of Array.from(files)) {
+    const fileName = `${Date.now()}-${file.name}`;
+
+    const { error } = await supabase.storage
+      .from('products')
+      .upload(fileName, file);
+
+    if (error) continue;
+
+    const { data } = supabase.storage
+      .from('products')
+      .getPublicUrl(fileName);
+
+    uploadedUrls.push(data.publicUrl);
+  }
+
+  setFormData((prev) => ({
+    ...prev,
+    images: [...prev.images, ...uploadedUrls],
   }));
 };
 
@@ -497,6 +541,28 @@ const handleImageUpload = async (
               <div>
   <label className={`block text-sm font-medium text-gray-700 mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
     Upload Image *
+    {/* Multiple Images Upload */}
+<div>
+  <label className="block text-sm font-medium mb-2">
+    Upload Extra Images
+  </label>
+
+  <input
+    type="file"
+    accept="image/*"
+    multiple
+    onChange={handleMultipleImagesUpload}
+    className="w-full"
+  />
+
+  {formData.images.length > 0 && (
+    <div className="flex gap-3 mt-4 flex-wrap">
+      {formData.images.map((img, i) => (
+        <img key={i} src={img} className="w-24 h-24 rounded-lg object-cover" />
+      ))}
+    </div>
+  )}
+</div>
   </label>
 
   <input
@@ -514,7 +580,21 @@ const handleImageUpload = async (
   />
 )}
 </div>
+{/* Video URL */}
+<div>
+  <label className="block text-sm font-medium mb-2">
+    Product Video (YouTube link)
+  </label>
 
+  <input
+    type="text"
+    name="video"
+    value={formData.video}
+    onChange={handleChange}
+    placeholder="https://youtube.com/..."
+    className="w-full px-4 py-3 rounded-xl border border-gray-200"
+  />
+</div>
               {/* Specifications */}
               <div className="grid md:grid-cols-2 gap-4">
                 <div>

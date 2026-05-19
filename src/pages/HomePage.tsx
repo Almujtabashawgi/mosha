@@ -8,6 +8,19 @@ import { supabase } from "../supabase";
 const HomePage = () => {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language.startsWith('ar');
+  // نجيب القطاعات من ملف الترجمة
+const sectorsPages = t("sectorsPages", { returnObjects: true }) as any;
+
+// نحولها لشكل مناسب للعرض
+const sectors = [
+  { id:"engineering", icon: Factory, color:'from-blue-600 to-blue-800', ...sectorsPages.engineering },
+  { id:"medical", icon: Stethoscope, color:'from-indigo-600 to-indigo-800', ...sectorsPages.medical },
+  { id:"agriculture", icon: Package, color:'from-green-600 to-green-800', ...sectorsPages.agriculture },
+  { id:"mining", icon: Factory, color:'from-slate-700 to-slate-900', ...sectorsPages.mining },
+  { id:"energy", icon: Globe, color:'from-yellow-500 to-orange-600', ...sectorsPages.energy },
+  { id:"import-export", icon: Globe, color:'from-cyan-600 to-blue-700', ...sectorsPages.importExport },
+  { id:"heavy-machinery", icon: Factory, color:'from-rose-600 to-red-700', ...sectorsPages.heavyMachinery }
+];
   const [products, setProducts] = useState<any[]>([]);
   const fetchProducts = async () => {
   const { data, error } = await supabase
@@ -46,30 +59,7 @@ useEffect(() => {
   const company = siteConfig.company;
 
   // إعداد القطاعات يدوياً لتتوافق مع محتوى المترجم والبيانات المتاحة
-  const sectors = [
-    {
-      icon: Factory,
-      title: isRTL ? 'الآلات الثقيلة والمعدات' : 'Heavy Machinery & Equipment',
-      description: isRTL ? 'استيراد وتصدير أحدث الآلات والمعدات الإنشائية والصناعية من كبرى الشركات العالمية.' : 'Import and export of state-of-the-art construction and industrial machinery from leading global brands.',
-      category: 'heavy-machinery',
-      color: 'from-blue-600 to-blue-800'
-    },
-    {
-      icon: Stethoscope,
-      title: isRTL ? 'المستلزمات والمعدات الطبية' : 'Medical Supplies & Equipment',
-      description: isRTL ? 'توفير وتوريد أجهزة الرعاية الصحية والمستلزمات الطبية المعتمدة للمستشفيات والمراكز الطبية.' : 'Providing and supplying certified healthcare equipment and medical supplies for hospitals and medical centers.',
-      category: 'medical-supplies',
-      color: 'from-indigo-600 to-indigo-800'
-    },
-    {
-      icon: Package,
-      title: isRTL ? 'السلع والمنتجات العامة' : 'General Goods & Commodities',
-      description: isRTL ? 'تجارة وتوريد السلع الاستهلاكية والمواد الغذائية والمنتجات العامة بجودة وكفاءة عالية.' : 'Trading and supply of consumer goods, foodstuffs, and general commodities with high quality and efficiency.',
-      category: 'general-goods',
-      color: 'from-slate-700 to-slate-900'
-    }
-  ];
-
+  
   const stats = [
     { icon: Globe, value: '15+', label: isRTL ? 'دول الشركاء' : 'Partner Countries' },
     { icon: Users, value: '500+', label: isRTL ? 'عميل موثوق' : 'Trusted Clients' },
@@ -143,14 +133,14 @@ useEffect(() => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl font-black text-slate-900 tracking-tight sm:text-4xl">
-              {t('sectorsTitle')}
+              {isRTL ? 'قطاعاتنا' : 'Our Sectors'}
             </h2>
             <p className="mt-4 text-lg text-slate-600 font-medium">
-              {t('sectorsSubtitle')}
+              {isRTL ? 'نغطي عدة مجالات تجارية واستثمارية متنوعة' : 'We operate across multiple business and investment sectors'}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {sectors.map((sector, index) => (
               <div
                 key={index}
@@ -164,7 +154,7 @@ useEffect(() => {
                   <p className="text-slate-600 text-sm leading-relaxed mb-6">{sector.description}</p>
                 </div>
                 <Link
-                  to={`/products?category=${sector.category}`}
+                  to={`/sector/${sector.id}`}
                   className="inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-800 transition-colors group/link"
                 >
                   <span>{isRTL ? 'تصفح المنتجات' : 'Browse Products'}</span>

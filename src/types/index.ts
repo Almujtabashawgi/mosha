@@ -1,29 +1,29 @@
 export interface Product {
-  id: number;
+  id: number | string;
+
   name: string;
-  namear: string;
+  nameAr: string;
+
   description: string;
-  descriptionar: string;
+  descriptionAr: string;
+
+  // وصف طويل يظهر في الـ popup
+  details?: string;
+  detailsAr?: string;
+
   category: string;
   price?: string;
+
+  // صورة الكرت الأساسية
   image: string;
+
+  // 🔥 صور متعددة للـ modal
+  images?: string[];
+
+  // 🔥 فيديو يوتيوب اختياري
+  video?: string;
+
   specifications?: string;
-  specificationsar?: string;
+  specificationsAr?: string;
   origin?: string;
 }
-
-export interface ContactForm {
-  name: string;
-  email: string;
-  phone: string;
-  subject: string;
-  message: string;
-}
-
-export type Category = 'heavy-machinery' | 'medical-supplies' | 'general-goods';
-
-export const CATEGORIES: { value: Category; label: string; labelAr: string }[] = [
-  { value: 'heavy-machinery', label: 'Heavy Machinery & Equipment', labelAr: 'الآلات الثقيلة والمعدات' },
-  { value: 'medical-supplies', label: 'Medical Supplies & Equipment', labelAr: 'المستلزمات والمعدات الطبية' },
-  { value: 'general-goods', label: 'General Goods & Commodities', labelAr: 'السلع والمنتجات العامة' },
-];
