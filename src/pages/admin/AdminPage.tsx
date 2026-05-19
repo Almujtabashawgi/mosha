@@ -103,16 +103,16 @@ useEffect(() => {
 
     setFormData({
       name: product.name || '',
-      nameAr: product.namear || '',
+      nameAr: product.nameAr || '',
       description: product.description || '',
-      descriptionAr: product.descriptionar || '',
+      descriptionAr: product.descriptionAr || '',
       category: product.category || 'heavy-machinery',
       price: product.price || '',
       image: product.image || '',
       images: product.images || [],        // 🔥 كان ناقص
       video: product.video || '',          // 🔥 كان ناقص
       specifications: product.specifications || '',
-      specificationsAr: product.specificationsar || '',
+      specificationsAr: product.specificationsAr || '',
       origin: product.origin || ''
     });
 
@@ -537,11 +537,29 @@ const handleMultipleImagesUpload = async (
                 </div>
               </div>
 
-              {/* Image URL */}
-              <div>
-  <label className={`block text-sm font-medium text-gray-700 mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
-    Upload Image *
-    {/* Multiple Images Upload */}
+              {/* Upload Main Image */}
+<div>
+  <label className="block text-sm font-medium mb-2">
+    Upload Main Image *
+  </label>
+
+  <input
+    type="file"
+    accept="image/*"
+    onChange={handleImageUpload}
+    className="w-full"
+  />
+
+  {formData.image && (
+    <img
+      src={formData.image}
+      alt="preview"
+      className="w-32 h-32 object-cover rounded-lg mt-4"
+    />
+  )}
+</div>
+
+{/* Upload Extra Images */}
 <div>
   <label className="block text-sm font-medium mb-2">
     Upload Extra Images
@@ -562,23 +580,6 @@ const handleMultipleImagesUpload = async (
       ))}
     </div>
   )}
-</div>
-  </label>
-
-  <input
-  type="file"
-  accept="image/*"
-  onChange={handleImageUpload}
-  className="w-full"
-/>
-
-{formData.image && (
-  <img
-    src={formData.image}
-    alt="preview"
-    className="w-32 h-32 object-cover rounded-lg mt-4"
-  />
-)}
 </div>
 {/* Video URL */}
 <div>

@@ -23,11 +23,36 @@ export interface Product {
 }
 
 // ⭐️ هذا هو الجزء الناقص اللي سبب المشكلة
-export const CATEGORIES = [
-  "All",
-  "Heavy Machinery",
-  "Medical Supplies",
-  "Generators",
-  "Spare Parts",
-  "General Goods"
+export interface Category {
+  value: string;
+  label: string;
+  labelAr: string;
+}
+
+export const CATEGORIES: Category[] = [
+  {
+    value: "heavy-machinery",
+    label: "Heavy Machinery",
+    labelAr: "المعدات الثقيلة"
+  },
+  {
+    value: "medical-supplies",
+    label: "Medical Supplies",
+    labelAr: "المستلزمات الطبية"
+  },
+  {
+    value: "generators",
+    label: "Generators",
+    labelAr: "المولدات"
+  },
+  {
+    value: "spare-parts",
+    label: "Spare Parts",
+    labelAr: "قطع الغيار"
+  },
+  {
+    value: "general-goods",
+    label: "General Goods",
+    labelAr: "بضائع عامة"
+  }
 ];
