@@ -10,12 +10,16 @@ export default function ProductModal({ product, onClose }: Props) {
   const { i18n } = useTranslation();
   const isRTL = i18n.language.startsWith("ar");
 
-  const images =
-  typeof product.images === "string"
-    ? product.images.split(",").map((img:string)=>img.trim())
-    : product.images && product.images.length > 0
-    ? product.images
-    : [product.image];
+  // تحويل الصور لأي شكل صحيح دائماً
+let images: string[] = [];
+
+if (Array.isArray(product.images) && product.images.length > 0) {
+  images = product.images;
+} else if (typeof product.images === "string" && product.images !== "") {
+  images = product.images.split(",").map((img: string) => img.trim());
+} else if (product.image) {
+  images = [product.image];
+}
 
   const [activeImage, setActiveImage] = useState(images[0]);
 
