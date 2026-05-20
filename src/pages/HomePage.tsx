@@ -15,6 +15,7 @@ import { siteConfig } from '../data/content';
 import { useEffect, useState } from "react";
 import { supabase } from "../supabase";
 import ProductModal from "../components/ProductModal";
+import { CATEGORIES } from '../types';
 
 const HomePage = () => {
 
@@ -30,61 +31,58 @@ const HomePage = () => {
       id: "engineering",
       icon: Factory,
       color: 'from-blue-600 to-blue-800',
-      ...sectorsPages.engineering
+      title: sectorsPages.engineering?.title || "Engineering",
+      description: sectorsPages.engineering?.description || ""
     },
 
     {
-      id: "medical",
+      id: "medical-supplies",
       icon: Stethoscope,
       color: 'from-indigo-600 to-indigo-800',
-      ...sectorsPages.medical
+      title: sectorsPages.medical?.title || "Medical Supplies",
+      description: sectorsPages.medical?.description || ""
     },
 
     {
       id: "agriculture",
       icon: Package,
       color: 'from-green-600 to-green-800',
-      ...sectorsPages.agriculture
+      title: sectorsPages.agriculture?.title || "Agriculture",
+      description: sectorsPages.agriculture?.description || ""
     },
 
     {
       id: "mining",
       icon: Factory,
       color: 'from-slate-700 to-slate-900',
-      ...sectorsPages.mining
+      title: sectorsPages.mining?.title || "Mining",
+      description: sectorsPages.mining?.description || ""
     },
 
     {
       id: "energy",
       icon: Globe,
       color: 'from-yellow-500 to-orange-600',
-      ...sectorsPages.energy
+      title: sectorsPages.energy?.title || "Energy",
+      description: sectorsPages.energy?.description || ""
     },
 
     {
       id: "import-export",
       icon: Globe,
       color: 'from-cyan-600 to-blue-700',
-      ...sectorsPages.importExport
+      title: sectorsPages.importExport?.title || "Import Export",
+      description: sectorsPages.importExport?.description || ""
     },
 
     {
       id: "heavy-machinery",
       icon: Factory,
       color: 'from-rose-600 to-red-700',
-      ...sectorsPages.heavyMachinery
+      title: sectorsPages.heavyMachinery?.title || "Heavy Machinery",
+      description: sectorsPages.heavyMachinery?.description || ""
     }
   ];
-
-  const categoryMap: any = {
-    engineering: "engineering",
-    medical: "medical-supplies",
-    agriculture: "agriculture",
-    mining: "mining",
-    energy: "energy",
-    "import-export": "import-export",
-    "heavy-machinery": "heavy-machinery",
-  };
 
   const [products, setProducts] = useState<any[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
@@ -155,6 +153,60 @@ const HomePage = () => {
     }
 
   ];
+
+  const getSectorStyle = (category: string) => {
+
+    switch (category) {
+
+      case 'engineering':
+        return {
+          icon: Factory,
+          color: 'from-blue-600 to-blue-800'
+        };
+
+      case 'medical-supplies':
+        return {
+          icon: Stethoscope,
+          color: 'from-indigo-600 to-indigo-800'
+        };
+
+      case 'agriculture':
+        return {
+          icon: Package,
+          color: 'from-green-600 to-green-800'
+        };
+
+      case 'mining':
+        return {
+          icon: Factory,
+          color: 'from-slate-700 to-slate-900'
+        };
+
+      case 'energy':
+        return {
+          icon: Globe,
+          color: 'from-yellow-500 to-orange-600'
+        };
+
+      case 'import-export':
+        return {
+          icon: Globe,
+          color: 'from-cyan-600 to-blue-700'
+        };
+
+      case 'heavy-machinery':
+        return {
+          icon: Factory,
+          color: 'from-rose-600 to-red-700'
+        };
+
+      default:
+        return {
+          icon: Package,
+          color: 'from-gray-600 to-gray-800'
+        };
+    }
+  };
 
   return (
 
@@ -334,34 +386,37 @@ const HomePage = () => {
 
           <div className="space-y-20">
 
-            {sectors.map((sector: any) => {
+            {CATEGORIES.map((category) => {
 
               const items = products.filter(
                 (product: any) =>
-                  product.category === categoryMap[sector.id]
+                  product.category === category.value
               );
 
               if (items.length === 0) return null;
 
+              const sectorStyle = getSectorStyle(category.value);
+              const Icon = sectorStyle.icon;
+
               return (
 
-                <div key={sector.id}>
+                <div key={category.value}>
 
                   {/* Section Title */}
                   <div className="flex items-center gap-4 mb-8">
 
                     <div
-                      className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${sector.color} flex items-center justify-center shadow-lg`}
+                      className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${sectorStyle.color} flex items-center justify-center shadow-lg`}
                     >
 
-                      <sector.icon className="w-6 h-6 text-white" />
+                      <Icon className="w-6 h-6 text-white" />
 
                     </div>
 
                     <div>
 
                       <h3 className="text-2xl font-black text-slate-900">
-                        {sector.title}
+                        {isRTL ? category.labelAr : category.label}
                       </h3>
 
                       <p className="text-sm text-slate-500 font-medium">
@@ -393,9 +448,9 @@ const HomePage = () => {
                           />
 
                           <span
-                            className={`absolute top-4 right-4 px-3 py-1 text-white rounded-xl text-xs font-bold bg-gradient-to-r ${sector.color}`}
+                            className={`absolute top-4 right-4 px-3 py-1 text-white rounded-xl text-xs font-bold bg-gradient-to-r ${sectorStyle.color}`}
                           >
-                            {sector.title}
+                            {isRTL ? category.labelAr : category.label}
                           </span>
 
                         </div>
