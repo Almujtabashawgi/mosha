@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu, X, Globe } from 'lucide-react';
 import { useAuthStore } from '../store';
+import logo from '../assets/logo.png';
 import { siteConfig } from '../data/content';
 
 const Header = () => {
@@ -47,9 +48,11 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-900 to-blue-700 flex items-center justify-center">
-              <span className="text-white font-bold text-xl">م</span>
-            </div>
+            <img
+  src={logo}
+  alt="Logo"
+  className="w-12 h-12 object-contain"
+/>
             <div className="hidden sm:block">
               <h1 className={`text-lg font-bold text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}>
                 {isRTL ? siteConfig.company.nameAr : siteConfig.company.name}
