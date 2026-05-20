@@ -51,7 +51,7 @@ const Header = () => {
             <img
   src={logo}
   alt="Logo"
-  className="w-12 h-12 object-contain"
+  className="w-24 h-24 object-contain"
 />
             <div className="hidden sm:block">
               <h1 className={`text-lg font-bold text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}>
