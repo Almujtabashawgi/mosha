@@ -25,11 +25,9 @@ export const siteConfig = {
 
   // Contact Information
   contact: {
-    email: 'info@mosha-trading.com',
-    emailExport: 'export@mosha-trading.com',
+    email: 'info@moshaltd.com',
+    emailExport: 'export@moshaltd.com',
     phone: '+249 901 388 888',
-    phoneAlt: '+249 123 801 813',
-    fax: '+249 123 801 813',
     address: 'Alengaz Street, Bahri District',
     addressAr: 'شارع الإنقاذ، بحري',
     workingHours: 'Sunday - Thursday: 8:00 AM - 6:00 PM',

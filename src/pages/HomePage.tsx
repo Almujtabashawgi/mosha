@@ -61,9 +61,9 @@ useEffect(() => {
   // إعداد القطاعات يدوياً لتتوافق مع محتوى المترجم والبيانات المتاحة
   
   const stats = [
-    { icon: Globe, value: '15+', label: isRTL ? 'دول الشركاء' : 'Partner Countries' },
+    { icon: Globe, value: '10+', label: isRTL ? 'دول الشركاء' : 'Partner Countries' },
     { icon: Users, value: '500+', label: isRTL ? 'عميل موثوق' : 'Trusted Clients' },
-    { icon: Award, value: '16+', label: isRTL ? 'عام من التميز' : 'Years of Excellence', sub: company.established },
+    { icon: Award, value: '5+', label: isRTL ? 'عام من التميز' : 'Years of Excellence', sub: company.established },
     { icon: Clock, value: '24/7', label: isRTL ? 'دعم متواصل' : 'Continuous Support' }
   ];
 
