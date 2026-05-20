@@ -21,7 +21,7 @@ const AdminPage = () => {
   nameAr: '',
   description: '',
   descriptionAr: '',
-  category: 'heavy-machinery',
+  category: 'engineering',
   price: '',
   image: '',
   images: [] as string[],
@@ -94,7 +94,7 @@ useEffect(() => {
       nameAr: product.nameAr || '',
       description: product.description || '',
       descriptionAr: product.descriptionAr || '',
-      category: product.category || 'heavy-machinery',
+      category: product.category || 'engineering',
       price: product.price || '',
       image: product.image || '',
       images: product.images || [],        // 🔥 كان ناقص
@@ -112,7 +112,7 @@ useEffect(() => {
       nameAr: '',
       description: '',
       descriptionAr: '',
-      category: 'heavy-machinery',
+      category: 'engineering',
       price: '',
       image: '',
       images: [],      // 🔥 مهم
