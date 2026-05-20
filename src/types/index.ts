@@ -31,9 +31,9 @@ export interface Category {
 
 export const CATEGORIES: Category[] = [
   {
-    value: "heavy-machinery",
-    label: "Heavy Machinery",
-    labelAr: "المعدات الثقيلة"
+    value: "engineering",
+    label: "Engineering",
+    labelAr: "الهندسة"
   },
   {
     value: "medical-supplies",
@@ -41,18 +41,23 @@ export const CATEGORIES: Category[] = [
     labelAr: "المستلزمات الطبية"
   },
   {
-    value: "generators",
-    label: "Generators",
-    labelAr: "المولدات"
+    value: "agriculture",
+    label: "Agriculture",
+    labelAr: "الزراعة"
   },
   {
-    value: "spare-parts",
-    label: "Spare Parts",
-    labelAr: "قطع الغيار"
+    value: "mining",
+    label: "Mining",
+    labelAr: "التعدين"
   },
   {
-    value: "general-goods",
-    label: "General Goods",
-    labelAr: "بضائع عامة"
+    value: "energy",
+    label: "Energy",
+    labelAr: "الطاقة"
+  },
+  {
+    value: "import-export",
+    label: "Import & Export",
+    labelAr: "الاستيراد والتصدير"
   }
 ];
