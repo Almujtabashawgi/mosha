@@ -14,6 +14,7 @@ import {
 import { siteConfig } from '../data/content';
 import { useEffect, useState } from "react";
 import { supabase } from "../supabase";
+import ProductModal from "../components/ProductModal";
 
 const HomePage = () => {
 
@@ -75,7 +76,18 @@ const HomePage = () => {
     }
   ];
 
+  const categoryMap: any = {
+    engineering: "engineering",
+    medical: "medical-supplies",
+    agriculture: "agriculture",
+    mining: "mining",
+    energy: "energy",
+    "import-export": "import-export",
+    "heavy-machinery": "heavy-machinery",
+  };
+
   const [products, setProducts] = useState<any[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
   const fetchProducts = async () => {
 
@@ -133,8 +145,7 @@ const HomePage = () => {
     {
       icon: Award,
       value: '5+',
-      label: isRTL ? 'عام من التميز' : 'Years of Excellence',
-      sub: company.established
+      label: isRTL ? 'عام من التميز' : 'Years of Excellence'
     },
 
     {
@@ -155,7 +166,7 @@ const HomePage = () => {
       {/* HERO */}
       <section className="relative min-h-[90vh] flex items-center bg-gradient-to-tr from-slate-950 via-blue-950 to-slate-900 text-white pt-24">
 
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <div className="absolute inset-0 opacity-10">
           <div
             className="absolute top-0 left-0 w-full h-full"
             style={{
@@ -166,7 +177,7 @@ const HomePage = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10 w-full">
 
-          <div className="max-w-3xl animate-fade-in">
+          <div className="max-w-3xl">
 
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-500/30 mb-6">
               ✨ {isRTL
@@ -298,21 +309,6 @@ const HomePage = () => {
 
                 </div>
 
-                <Link
-                  to={`/sector/${sector.id}`}
-                  className="inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-800 transition-colors"
-                >
-
-                  <span>
-                    {isRTL ? 'تصفح المنتجات' : 'Browse Products'}
-                  </span>
-
-                  <ArrowRight
-                    className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`}
-                  />
-
-                </Link>
-
               </div>
 
             ))}
@@ -323,200 +319,135 @@ const HomePage = () => {
 
       </section>
 
-      {/* PRODUCTS BY CATEGORY */}
+      {/* PRODUCTS */}
       <section className="py-24 bg-slate-100/60 border-t border-b border-slate-200/50">
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          <div className="flex flex-col sm:flex-row items-center justify-between mb-14 gap-4">
+          <div className="mb-14">
 
-            <div className={isRTL ? 'text-right' : 'text-left'}>
-
-              <h2 className="text-3xl font-black text-slate-900 tracking-tight">
-                {isRTL ? 'المنتجات حسب الفئة' : 'Products by Category'}
-              </h2>
-
-              <p className="text-slate-500 text-sm font-medium mt-1">
-                {isRTL
-                  ? 'استعرض منتجاتنا المصنفة حسب القطاع'
-                  : 'Browse our products organized by sector'}
-              </p>
-
-            </div>
-
-            <Link
-              to="/products"
-              className="px-5 py-2.5 bg-white text-slate-800 hover:bg-blue-900 hover:text-white rounded-xl text-sm font-bold shadow-sm border border-slate-200 transition-all inline-flex items-center gap-2"
-            >
-              <span>{t('viewAll')}</span>
-            </Link>
+            <h2 className="text-3xl font-black text-slate-900 tracking-tight">
+              {isRTL ? 'المنتجات حسب الفئة' : 'Products by Category'}
+            </h2>
 
           </div>
 
-          {(() => {
+          <div className="space-y-20">
 
-            const categoryConfig: any = {
+            {sectors.map((sector: any) => {
 
-              "medical-supplies": {
-                title: isRTL ? "المستلزمات الطبية" : "Medical Supplies",
-                color: "from-blue-600 to-indigo-700",
-                badge: isRTL ? "طبي" : "Medical",
-              },
+              const items = products.filter(
+                (product: any) =>
+                  product.category === categoryMap[sector.id]
+              );
 
-              "heavy-machinery": {
-                title: isRTL ? "الآليات الثقيلة" : "Heavy Machinery",
-                color: "from-orange-600 to-red-700",
-                badge: isRTL ? "آليات" : "Machinery",
-              },
+              if (items.length === 0) return null;
 
-              "agriculture": {
-                title: isRTL ? "المنتجات الزراعية" : "Agriculture",
-                color: "from-green-600 to-emerald-700",
-                badge: isRTL ? "زراعي" : "Agriculture",
-              },
+              return (
 
-              "engineering": {
-                title: isRTL ? "المعدات الهندسية" : "Engineering",
-                color: "from-slate-700 to-slate-900",
-                badge: isRTL ? "هندسي" : "Engineering",
-              },
+                <div key={sector.id}>
 
-            };
+                  {/* Section Title */}
+                  <div className="flex items-center gap-4 mb-8">
 
-            const groupedProducts = products.reduce((acc: any, product: any) => {
+                    <div
+                      className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${sector.color} flex items-center justify-center shadow-lg`}
+                    >
 
-              if (!acc[product.category]) {
-                acc[product.category] = [];
-              }
+                      <sector.icon className="w-6 h-6 text-white" />
 
-              acc[product.category].push(product);
+                    </div>
 
-              return acc;
+                    <div>
 
-            }, {});
+                      <h3 className="text-2xl font-black text-slate-900">
+                        {sector.title}
+                      </h3>
 
-            return (
+                      <p className="text-sm text-slate-500 font-medium">
+                        {items.length} {isRTL ? "منتج متوفر" : "Products Available"}
+                      </p>
 
-              <div className="space-y-20">
+                    </div>
 
-                {sectors.map((sector: any) => {
+                  </div>
 
-  const items = products.filter(
-    (product: any) => product.category === sector.id
-  );
+                  {/* Products Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-  if (items.length === 0) return null;
+                    {items.map((product: any) => (
 
-  return (
+                      <div
+                        key={product.id}
+                        onClick={() => setSelectedProduct(product)}
+                        className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
+                      >
 
-    <div key={sector.id}>
+                        {/* Image */}
+                        <div className="relative aspect-[4/3] bg-slate-100 overflow-hidden">
 
-      {/* عنوان القسم */}
-      <div className="flex items-center gap-4 mb-8">
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                          />
 
-        <div
-          className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${sector.color} flex items-center justify-center shadow-lg`}
-        >
+                          <span
+                            className={`absolute top-4 right-4 px-3 py-1 text-white rounded-xl text-xs font-bold bg-gradient-to-r ${sector.color}`}
+                          >
+                            {sector.title}
+                          </span>
 
-          <sector.icon className="w-6 h-6 text-white" />
+                        </div>
 
-        </div>
+                        {/* Content */}
+                        <div className="p-6 flex flex-col h-full">
 
-        <div>
+                          <div className="flex-1">
 
-          <h3 className="text-2xl font-black text-slate-900">
-            {sector.title}
-          </h3>
+                            <h3 className="text-lg font-extrabold text-slate-900 mb-3 group-hover:text-blue-700 transition-colors">
+                              {isRTL ? product.namear : product.name}
+                            </h3>
 
-          <p className="text-sm text-slate-500 font-medium">
-            {items.length} {isRTL ? "منتج متوفر" : "Products Available"}
-          </p>
+                            <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">
+                              {isRTL
+                                ? product.descriptionar
+                                : product.description}
+                            </p>
 
-        </div>
+                          </div>
 
-      </div>
+                          {product.price && (
 
-      {/* المنتجات */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
 
-        {items.map((product: any) => (
+                              <span className="text-xs uppercase tracking-wider font-bold text-slate-400">
+                                {isRTL ? "السعر" : "Price"}
+                              </span>
 
-          <div
-            key={product.id}
-            className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group"
-          >
+                              <span className="text-lg font-black text-blue-900">
+                                {product.price}
+                              </span>
 
-            {/* الصورة */}
-            <div className="relative aspect-[4/3] bg-slate-100 overflow-hidden">
+                            </div>
 
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-              />
+                          )}
 
-              {/* Badge */}
-              <span
-                className={`absolute top-4 right-4 px-3 py-1 text-white rounded-xl text-xs font-bold bg-gradient-to-r ${sector.color}`}
-              >
-                {sector.title}
-              </span>
+                        </div>
 
-            </div>
+                      </div>
 
-            {/* المحتوى */}
-            <div className="p-6 flex flex-col h-full">
+                    ))}
 
-              <div className="flex-1">
-
-                <h3 className="text-lg font-extrabold text-slate-900 mb-3 group-hover:text-blue-700 transition-colors">
-                  {isRTL ? product.nameAr : product.name}
-                </h3>
-
-                <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">
-                  {isRTL
-                    ? product.descriptionAr
-                    : product.description}
-                </p>
-
-              </div>
-
-              {/* السعر */}
-              {product.price && (
-
-                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-
-                  <span className="text-xs uppercase tracking-wider font-bold text-slate-400">
-                    {isRTL ? "السعر" : "Price"}
-                  </span>
-
-                  <span className="text-lg font-black text-blue-900">
-                    {product.price}
-                  </span>
+                  </div>
 
                 </div>
 
-              )}
+              );
 
-            </div>
+            })}
 
           </div>
-
-        ))}
-
-      </div>
-
-    </div>
-
-  );
-
-})}
-
-              </div>
-
-            );
-
-          })()}
 
         </div>
 
@@ -555,6 +486,14 @@ const HomePage = () => {
         </div>
 
       </section>
+
+      {/* PRODUCT MODAL */}
+      {selectedProduct && (
+        <ProductModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+        />
+      )}
 
     </div>
 
