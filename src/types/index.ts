@@ -59,5 +59,10 @@ export const CATEGORIES: Category[] = [
     value: "import-export",
     label: "Import & Export",
     labelAr: "الاستيراد والتصدير"
+  },
+  {
+    value: "heavy-machinery",
+    label: "Heavy Machinery",
+    labelAr: "المعدات الثقيلة"
   }
 ];
