@@ -10,31 +10,49 @@ const resources = {
       products: 'Products & Sectors',
       contact: 'Contact Us',
 
-      save: 'Save',
-      cancel: 'Cancel',
-      login: 'Login',
-      logout: 'Logout',
-      addProduct: 'Add Product',
-      editProduct: 'Edit Product',
-      delete: 'Delete',
-      category: 'Category',
-      price: 'Price',
-      origin: 'Origin',
-      description: 'Description',
-      specifications: 'Specifications',
-      image: 'Image',
-      productName: 'Product Name',
-      adminDashboard: 'Admin Dashboard',
-      noProducts: 'No products found',
-      confirmDelete: 'Are you sure you want to delete this product?',
-      search: 'Search...',
-      allProducts: 'All Products',
-      heavyMachinery: 'Heavy Machinery',
-      medicalSupplies: 'Medical Supplies',
-      generalGoods: 'General Goods',
-      addToInquiry: 'Add To Inquiry',
-      productsTitle: 'Our Products',
-      productsSubtitle: 'Explore our products and sectors',
+      aboutTitle: "About Us",
+      aboutSubtitle: "Learn more about our company and services.",
+      aboutDescription: "We provide high-quality services and solutions across multiple sectors.",
+
+      contactBtn: "Contact Us",
+
+      visionTitle: "Our Vision",
+      visionText: "To become a leading company in engineering, medical, agriculture, mining, and energy sectors.",
+
+      missionTitle: "Our Mission",
+      missionText: "Deliver reliable services and products with the highest quality standards.",
+
+      valuesTitle: "Our Values",
+
+      strengthTitle: "Our Strengths",
+
+      values: {
+        integrity: "Integrity",
+        integrityDesc: "We work with transparency and professionalism.",
+
+        quality: "Quality",
+        qualityDesc: "We deliver top-quality services and products.",
+
+        reliability: "Reliability",
+        reliabilityDesc: "Clients trust us for dependable solutions.",
+
+        customerFocus: "Customer Focus",
+        customerFocusDesc: "Customer satisfaction is our priority."
+      },
+
+      strengths: {
+        global: "Global Reach",
+        globalDesc: "Strong international partnerships.",
+
+        logistics: "Logistics",
+        logisticsDesc: "Efficient supply chain and shipping.",
+
+        expertise: "Expertise",
+        expertiseDesc: "Professional and experienced team.",
+
+        support: "24/7 Support",
+        supportDesc: "Continuous customer support."
+      },
 
       /* ====== SECTORS PAGES ====== */
       sectorsPages: {
@@ -129,31 +147,49 @@ const resources = {
       products: 'المنتجات والقطاعات',
       contact: 'اتصل بنا',
 
-      save: 'حفظ',
-      cancel: 'إلغاء',
-      login: 'تسجيل دخول',
-      logout: 'تسجيل خروج',
-      addProduct: 'إضافة منتج',
-      editProduct: 'تعديل المنتج',
-      delete: 'حذف',
-      category: 'الفئة',
-      price: 'السعر',
-      origin: 'المنشأ',
-      description: 'الوصف',
-      specifications: 'المواصفات',
-      image: 'الصورة',
-      productName: 'اسم المنتج',
-      adminDashboard: 'لوحة التحكم',
-      noProducts: 'لا توجد منتجات',
-      confirmDelete: 'هل أنت متأكد من حذف المنتج؟',
-      search: 'بحث...',
-      allProducts: 'كل المنتجات',
-      heavyMachinery: 'الآليات الثقيلة',
-      medicalSupplies: 'المستلزمات الطبية',
-      generalGoods: 'المنتجات العامة',
-      addToInquiry: 'إضافة للاستفسار',
-      productsTitle: 'منتجاتنا',
-      productsSubtitle: 'استعرض منتجاتنا وقطاعاتنا',
+      aboutTitle: "من نحن",
+      aboutSubtitle: "تعرف أكثر على شركتنا وخدماتنا.",
+      aboutDescription: "نقدم خدمات وحلول عالية الجودة في عدة قطاعات مختلفة.",
+
+      contactBtn: "تواصل معنا",
+
+      visionTitle: "رؤيتنا",
+      visionText: "أن نصبح شركة رائدة في مجالات الهندسة والطب والزراعة والطاقة والتعدين.",
+
+      missionTitle: "رسالتنا",
+      missionText: "تقديم خدمات ومنتجات موثوقة بأعلى معايير الجودة.",
+
+      valuesTitle: "قيمنا",
+
+      strengthTitle: "نقاط قوتنا",
+
+      values: {
+        integrity: "النزاهة",
+        integrityDesc: "نعمل بشفافية واحترافية.",
+
+        quality: "الجودة",
+        qualityDesc: "نقدم أفضل الخدمات والمنتجات.",
+
+        reliability: "الموثوقية",
+        reliabilityDesc: "عملاؤنا يثقون في حلولنا.",
+
+        customerFocus: "التركيز على العميل",
+        customerFocusDesc: "رضا العميل أولويتنا."
+      },
+
+      strengths: {
+        global: "الانتشار العالمي",
+        globalDesc: "شراكات دولية قوية.",
+
+        logistics: "الخدمات اللوجستية",
+        logisticsDesc: "إدارة فعالة للشحن وسلاسل الإمداد.",
+
+        expertise: "الخبرة",
+        expertiseDesc: "فريق محترف وذو خبرة.",
+
+        support: "دعم 24/7",
+        supportDesc: "دعم متواصل للعملاء."
+      },
 
       /* ====== SECTORS PAGES ====== */
       sectorsPages: {
