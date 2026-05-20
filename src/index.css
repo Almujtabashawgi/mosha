@@ -9,6 +9,7 @@ html {
   scroll-behavior: smooth;
 }
 
+/* English Font */
 body {
   margin: 0;
   font-family: 'Inter', Arial, sans-serif;
@@ -16,9 +17,10 @@ body {
   color: #0f172a;
 }
 
-/* الخط العربي */
-html[dir="rtl"] body {
-  font-family: 'Cairo', Arial, sans-serif;
+/* Arabic Font */
+html[dir="rtl"] body,
+html[dir="rtl"] * {
+  font-family: 'Cairo', sans-serif;
 }
 
 * {
