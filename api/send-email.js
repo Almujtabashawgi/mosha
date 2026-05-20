@@ -24,7 +24,7 @@ export default async function handler(req, res) {
 
       from: "Moshal Website <onboarding@resend.dev>",
 
-      to: ["info@moshaltd.com"],
+      to: ["mostafashawgi@gmail.com"],
 
       replyTo: email,
 
