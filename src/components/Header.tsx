@@ -1,167 +1,163 @@
-import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { Menu, X, Globe } from 'lucide-react';
-import { useAuthStore } from '../store';
-import logo from '../assets/logo.png';
-import { siteConfig } from '../data/content';
+import { useEffect, useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Languages, Menu, X } from 'lucide-react';
+import { SITE, whatsappLink } from '../config/site';
+import { useLang } from '../hooks/useLang';
+import { LogoMark, WhatsAppIcon } from './ui';
 
-const Header = () => {
-  const { t, i18n } = useTranslation();
-  const location = useLocation();
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { isAuthenticated, logout } = useAuthStore();
+const NAV = [
+  { to: '/', key: 'home' },
+  { to: '/products', key: 'products' },
+  { to: '/offers', key: 'offers' },
+  { to: '/about', key: 'about' },
+  { to: '/contact', key: 'contact' },
+] as const;
 
-  const isRTL = i18n.language === 'ar';
-  const config = isRTL ? siteConfig.nav : siteConfig.nav;
+export default function Header() {
+  const { t, lang, toggle } = useLang();
+  const { pathname } = useLocation();
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const navLinks = [
-    { path: '/', label: isRTL ? config.homeAr : config.home },
-    { path: '/about', label: isRTL ? config.aboutAr : config.about },
-    { path: '/products', label: isRTL ? config.productsAr : config.products },
-    { path: '/contact', label: isRTL ? config.contactAr : config.contact },
-  ];
+  // Close the mobile menu on navigation / Escape
+  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [open]);
 
-  const toggleLanguage = () => {
-    const newLang = i18n.language === 'en' ? 'ar' : 'en';
-    i18n.changeLanguage(newLang);
-    document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr';
-  };
+  const solid = scrolled || open;
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-  isScrolled || isMobileMenuOpen
-    ? 'bg-white/95 backdrop-blur-md shadow-lg'
-    : 'bg-transparent'
-}`}
-      dir={isRTL ? 'rtl' : 'ltr'}
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+        solid ? 'border-b border-slate-200/70 bg-white/90 shadow-sm backdrop-blur-xl' : 'bg-transparent'
+      }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
-            <img
-  src={logo}
-  alt="Logo"
-  className="w-24 h-24 object-contain"
-/>
-            <div className="hidden sm:block">
-              <h1 className={`text-lg font-bold text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}>
-                {isRTL ? siteConfig.company.nameAr : siteConfig.company.name}
-              </h1>
-              <p className="text-xs text-gray-500">{isRTL ? siteConfig.company.taglineAr : siteConfig.company.tagline}</p>
-            </div>
-          </Link>
+      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-ink">
+        {lang === 'ar' ? 'تخطَّ إلى المحتوى' : 'Skip to content'}
+      </a>
+      <div className="container flex h-[72px] items-center justify-between gap-4">
+        {/* Brand */}
+        <Link to="/" className="flex min-w-0 items-center gap-3" aria-label={SITE.name[lang]}>
+          <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl ${solid ? 'bg-brand-50' : 'bg-white'} transition`}>
+            <LogoMark className="h-10 w-10" />
+          </span>
+          <span className="min-w-0 leading-tight">
+            <span className={`block truncate text-base font-extrabold sm:text-lg ${solid ? 'text-ink' : 'text-white'}`}>
+              {lang === 'ar' ? 'موشا للتجارة والاستثمار' : 'Mosha Trading & Investment'}
+            </span>
+            <span className={`hidden truncate text-xs sm:block ${solid ? 'text-slate-500' : 'text-slate-300'}`}>
+              {lang === 'ar' ? 'شريكك الموثوق في التجارة العالمية' : 'Your trusted partner in global trade'}
+            </span>
+          </span>
+        </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`relative text-sm font-medium transition-colors hover:text-blue-900 ${
-                  location.pathname === link.path
-                    ? 'text-blue-900'
-                    : 'text-gray-700'
-                }`}
-              >
-                {link.label}
-                {location.pathname === link.path && (
-                  <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-blue-900" />
-                )}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Right Side Actions */}
-          <div className="flex items-center gap-4">
-            {/* Language Toggle */}
-            <button
-              onClick={toggleLanguage}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+        {/* Desktop nav */}
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
+          {NAV.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === '/'}
+              className={({ isActive }) =>
+                `relative rounded-lg px-3.5 py-2 text-[15px] font-semibold transition ${
+                  isActive
+                    ? solid
+                      ? 'text-brand-700'
+                      : 'text-white'
+                    : solid
+                      ? 'text-slate-600 hover:text-ink'
+                      : 'text-slate-300 hover:text-white'
+                } ${isActive ? 'after:absolute after:inset-x-3.5 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-brand-500' : ''}`
+              }
             >
-              <Globe className="w-4 h-4" />
-              <span>{i18n.language.toUpperCase()}</span>
-            </button>
+              {t(`nav.${item.key}`)}
+            </NavLink>
+          ))}
+        </nav>
 
-            {/* Admin Link */}
-            {isAuthenticated ? (
-              <div className="flex items-center gap-3">
-                <Link
-                  to="/admin"
-                  className="px-4 py-2 bg-blue-900 text-white rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors"
-                >
-                  {isRTL ? config.adminAr : config.admin}
-                </Link>
-                <button
-                  onClick={logout}
-                  className="px-3 py-2 text-gray-700 hover:text-red-600 transition-colors text-sm"
-                >
-                  {isRTL ? config.logoutAr : config.logout}
-                </button>
-              </div>
-            ) : (
-              <Link
-                to="/admin"
-                className="hidden sm:block px-4 py-2 border-2 border-blue-900 text-blue-900 rounded-lg text-sm font-medium hover:bg-blue-900 hover:text-white transition-colors"
-              >
-                {isRTL ? config.loginAr : config.login}
-              </Link>
-            )}
+        {/* Actions */}
+        <div className="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            onClick={toggle}
+            className={`inline-flex h-11 items-center gap-1.5 rounded-xl px-3 text-sm font-bold transition ${
+              solid ? 'text-slate-700 hover:bg-slate-100' : 'text-white hover:bg-white/10'
+            }`}
+            aria-label={t('common.language')}
+            title={t('common.language')}
+          >
+            <Languages className="h-5 w-5" aria-hidden />
+            <span>{t('common.languageShort')}</span>
+          </button>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg hover:bg-gray-100"
-            >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
+          <a
+            href={whatsappLink(t('common.whatsappGeneral'))}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-whatsapp hidden md:inline-flex"
+          >
+            <WhatsAppIcon />
+            <span>{t('common.whatsapp')}</span>
+          </a>
+
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            className={`grid h-11 w-11 place-items-center rounded-xl lg:hidden ${
+              solid ? 'text-ink hover:bg-slate-100' : 'text-white hover:bg-white/10'
+            }`}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={t('common.menu')}
+          >
+            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
-
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-200">
-            <nav className="flex flex-col gap-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                    location.pathname === link.path
-                      ? 'bg-blue-50 text-blue-900'
-                      : 'text-gray-700 hover:bg-gray-50'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              {!isAuthenticated && (
-                <Link
-                  to="/admin"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="px-4 py-2 bg-blue-900 text-white rounded-lg text-sm font-medium text-center"
-                >
-                  {isRTL ? config.loginAr : config.login}
-                </Link>
-              )}
-            </nav>
-          </div>
-        )}
       </div>
+
+      {/* Mobile menu */}
+      {open && (
+        <div id="mobile-menu" className="h-[calc(100dvh-72px)] overflow-y-auto border-t border-slate-200 bg-white lg:hidden">
+          <nav className="container flex flex-col gap-1 py-6" aria-label="Mobile">
+            {NAV.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.to === '/'}
+                className={({ isActive }) =>
+                  `rounded-xl px-4 py-3.5 text-lg font-semibold ${isActive ? 'bg-brand-50 text-brand-700' : 'text-slate-700 hover:bg-slate-50'}`
+                }
+              >
+                {t(`nav.${item.key}`)}
+              </NavLink>
+            ))}
+            <div className="mt-6 grid gap-3 border-t border-slate-100 pt-6">
+              <a href={whatsappLink(t('common.whatsappGeneral'))} target="_blank" rel="noopener noreferrer" className="btn-whatsapp btn-lg">
+                <WhatsAppIcon />
+                {t('common.chatWhatsapp')}
+              </a>
+              <a href={`tel:${SITE.contact.phoneHref}`} className="btn-outline btn-lg" dir="ltr">
+                {SITE.contact.phone}
+              </a>
+            </div>
+          </nav>
+        </div>
+      )}
     </header>
   );
-};
-
-export default Header;
+}

@@ -1,101 +1,114 @@
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { Phone, Mail, MapPin, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
-import { siteConfig } from '../data/content';
+import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Twitter } from 'lucide-react';
+import { SECTORS, SITE, whatsappLink } from '../config/site';
+import { useLang } from '../hooks/useLang';
+import { LogoMark, WhatsAppIcon } from './ui';
 
-const Footer = () => {
-  const { t, i18n } = useTranslation();
-  const isRTL = i18n.language === 'ar';
+export default function Footer() {
+  const { t, lang } = useLang();
+  const year = new Date().getFullYear();
 
-  const config = siteConfig;
-  const currentYear = new Date().getFullYear();
+  const socials = [
+    { href: SITE.social.facebook, icon: Facebook, label: 'Facebook' },
+    { href: SITE.social.instagram, icon: Instagram, label: 'Instagram' },
+    { href: SITE.social.linkedin, icon: Linkedin, label: 'LinkedIn' },
+    { href: SITE.social.x, icon: Twitter, label: 'X' },
+  ].filter((s) => s.href);
 
   return (
-    <footer className="bg-slate-900 text-slate-200" dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          
-          {/* Company Info */}
-          <div className={isRTL ? 'text-right' : 'text-left'}>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-11 h-11 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/10">
-                <span className="text-white font-black text-xl">{isRTL ? 'م' : 'M'}</span>
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-white">{isRTL ? config.company.nameAr : config.company.name}</h3>
-              </div>
-            </div>
-            <p className="text-slate-400 text-sm leading-relaxed mb-6">
-              {t('footerDescription')}
-            </p>
-            <div className="flex gap-4">
-              <a href="#" className="p-2 bg-slate-800 hover:bg-blue-600 hover:text-white rounded-xl transition-all"><Facebook className="w-4 h-4" /></a>
-              <a href="#" className="p-2 bg-slate-800 hover:bg-blue-400 hover:text-white rounded-xl transition-all"><Twitter className="w-4 h-4" /></a>
-              <a href="#" className="p-2 bg-slate-800 hover:bg-blue-700 hover:text-white rounded-xl transition-all"><Linkedin className="w-4 h-4" /></a>
-              <a href="#" className="p-2 bg-slate-800 hover:bg-pink-600 hover:text-white rounded-xl transition-all"><Instagram className="w-4 h-4" /></a>
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div className={isRTL ? 'text-right' : 'text-left'}>
-            <h4 className="text-white font-bold mb-6 text-sm uppercase tracking-wider">{t('quickLinks')}</h4>
-            <ul className="space-y-3">
-              <li><Link to="/" className="text-slate-400 hover:text-white text-sm transition-colors">{t('home')}</Link></li>
-              <li><Link to="/about" className="text-slate-400 hover:text-white text-sm transition-colors">{t('about')}</Link></li>
-              <li><Link to="/products" className="text-slate-400 hover:text-white text-sm transition-colors">{t('products')}</Link></li>
-              <li><Link to="/contact" className="text-slate-400 hover:text-white text-sm transition-colors">{t('contact')}</Link></li>
-            </ul>
-          </div>
-
-          {/* Business Sectors */}
-          <div className={isRTL ? 'text-right' : 'text-left'}>
-            <h4 className="text-white font-bold mb-6 text-sm uppercase tracking-wider">{t('sectors')}</h4>
-            <ul className="space-y-3">
-              <li><Link to="/products?category=heavy-machinery" className="text-slate-400 hover:text-white text-sm transition-colors">{isRTL ? 'الآلات الثقيلة' : 'Heavy Machinery'}</Link></li>
-              <li><Link to="/products?category=medical-supplies" className="text-slate-400 hover:text-white text-sm transition-colors">{isRTL ? 'المستلزمات الطبية' : 'Medical Supplies'}</Link></li>
-              <li><Link to="/products?category=general-goods" className="text-slate-400 hover:text-white text-sm transition-colors">{isRTL ? 'السلع العامة' : 'General Goods'}</Link></li>
-            </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div className={isRTL ? 'text-right' : 'text-left'}>
-            <h4 className="text-white font-bold mb-6 text-sm uppercase tracking-wider">{t('contact')}</h4>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
-                <span className="text-slate-400 text-sm">{isRTL ? config.contact.addressAr : config.contact.address}</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-blue-500 flex-shrink-0" />
-                <span className="text-slate-400 text-sm" dir="ltr">{config.contact.phone}</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-blue-500 flex-shrink-0" />
-                <span className="text-slate-400 text-sm">{config.contact.email}</span>
-              </li>
-            </ul>
+    <footer className="bg-ink text-slate-300">
+      <div className="container grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-12">
+        {/* Brand */}
+        <div className="lg:col-span-4">
+          <Link to="/" className="flex items-center gap-3">
+            <span className="grid h-12 w-12 place-items-center rounded-xl bg-white">
+              <LogoMark className="h-11 w-11" />
+            </span>
+            <span className="text-lg font-extrabold text-white">{SITE.name[lang]}</span>
+          </Link>
+          <p className="mt-5 max-w-sm text-sm leading-7 text-slate-400">{t('footer.text')}</p>
+          <div className="mt-6 flex flex-wrap gap-2">
+            <a href={whatsappLink(t('common.whatsappGeneral'))} target="_blank" rel="noopener noreferrer" className="btn-whatsapp">
+              <WhatsAppIcon />
+              {t('common.chatWhatsapp')}
+            </a>
+            {socials.map(({ href, icon: Icon, label }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="grid h-11 w-11 place-items-center rounded-xl bg-white/5 text-slate-300 transition hover:bg-brand-600 hover:text-white"
+              >
+                <Icon className="h-5 w-5" />
+              </a>
+            ))}
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-slate-800 mt-12 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-slate-500 text-sm text-center md:text-start">
-              © {currentYear} {isRTL ? config.company.nameAr : config.company.name}. {t('allRights')}
-            </p>
-            <div className="flex gap-6">
-              <a href="#" className="text-slate-500 hover:text-white text-sm transition-colors">
-                {isRTL ? 'سياسة الخصوصية' : 'Privacy Policy'}
+        {/* Links */}
+        <div className="lg:col-span-2">
+          <h3 className="mb-5 text-sm font-bold uppercase tracking-wider text-white">{t('footer.links')}</h3>
+          <ul className="space-y-3 text-sm">
+            {(['home', 'products', 'offers', 'about', 'contact'] as const).map((k) => (
+              <li key={k}>
+                <Link to={k === 'home' ? '/' : `/${k}`} className="text-slate-400 transition hover:text-white">
+                  {t(`nav.${k}`)}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Sectors */}
+        <div className="lg:col-span-3">
+          <h3 className="mb-5 text-sm font-bold uppercase tracking-wider text-white">{t('footer.sectors')}</h3>
+          <ul className="space-y-3 text-sm">
+            {SECTORS.map((s) => (
+              <li key={s.id}>
+                <Link to={`/sector/${s.id}`} className="text-slate-400 transition hover:text-white">
+                  {t(`sectors.${s.id}.title`)}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Contact */}
+        <div className="lg:col-span-3">
+          <h3 className="mb-5 text-sm font-bold uppercase tracking-wider text-white">{t('footer.contact')}</h3>
+          <ul className="space-y-4 text-sm">
+            <li className="flex gap-3">
+              <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-brand-400" aria-hidden />
+              <span className="text-slate-400">{SITE.contact.address[lang]}</span>
+            </li>
+            <li className="flex gap-3">
+              <Phone className="mt-0.5 h-5 w-5 shrink-0 text-brand-400" aria-hidden />
+              <a href={`tel:${SITE.contact.phoneHref}`} className="text-slate-400 hover:text-white" dir="ltr">
+                {SITE.contact.phone}
               </a>
-              <a href="#" className="text-slate-500 hover:text-white text-sm transition-colors">
-                {isRTL ? 'الشروط والأحكام' : 'Terms & Conditions'}
+            </li>
+            <li className="flex gap-3">
+              <Mail className="mt-0.5 h-5 w-5 shrink-0 text-brand-400" aria-hidden />
+              <a href={`mailto:${SITE.contact.email}`} className="break-all text-slate-400 hover:text-white">
+                {SITE.contact.email}
               </a>
-            </div>
-          </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="border-t border-white/10">
+        <div className="container flex flex-col items-center justify-between gap-3 py-6 text-sm text-slate-500 sm:flex-row">
+          <p>
+            © {year} {SITE.name[lang]}. {t('footer.rights')}
+          </p>
+          <Link to="/privacy" className="hover:text-white">
+            {t('footer.privacy')}
+          </Link>
         </div>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

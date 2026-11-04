@@ -2,295 +2,612 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-const resources = {
-  en: {
-    translation: {
-      home: 'Home',
-      about: 'About Us',
-      products: 'Products & Sectors',
-      contact: 'Contact Us',
-
-      aboutTitle: "About Us",
-      aboutSubtitle: "Learn more about our company and services.",
-      aboutDescription: "We provide high-quality services and solutions across multiple sectors.",
-
-      contactBtn: "Contact Us",
-
-      visionTitle: "Our Vision",
-      visionText: "To become a leading company in engineering, medical, agriculture, mining, and energy sectors.",
-
-      missionTitle: "Our Mission",
-      missionText: "Deliver reliable services and products with the highest quality standards.",
-
-      valuesTitle: "Our Values",
-
-      strengthTitle: "Our Strengths",
-
-      values: {
-        integrity: "Integrity",
-        integrityDesc: "We work with transparency and professionalism.",
-
-        quality: "Quality",
-        qualityDesc: "We deliver top-quality services and products.",
-
-        reliability: "Reliability",
-        reliabilityDesc: "Clients trust us for dependable solutions.",
-
-        customerFocus: "Customer Focus",
-        customerFocusDesc: "Customer satisfaction is our priority."
-      },
-
-      strengths: {
-        global: "Global Reach",
-        globalDesc: "Strong international partnerships.",
-
-        logistics: "Logistics",
-        logisticsDesc: "Efficient supply chain and shipping.",
-
-        expertise: "Expertise",
-        expertiseDesc: "Professional and experienced team.",
-
-        support: "24/7 Support",
-        supportDesc: "Continuous customer support."
-      },
-
-      /* ====== SECTORS PAGES ====== */
-      sectorsPages: {
-        servicesTitle: "Our Services",
-
-        engineering: {
-          title: "Mosha Engineering",
-          desc: "Integrated solutions in contracting, infrastructure and engineering projects.",
-          services: [
-            "Engineering project execution",
-            "General contracting",
-            "Project management",
-            "Engineering consultancy",
-            "Surveying works"
-          ]
-        },
-
-        medical: {
-          title: "Mosha Medical",
-          desc: "Supply of medical equipment and healthcare products.",
-          services: [
-            "Modern medical devices",
-            "Medical consumables",
-            "Maintenance services"
-          ]
-        },
-
-        agriculture: {
-          title: "Mosha Agriculture",
-          desc: "Modern agricultural solutions.",
-          services: [
-            "Agricultural equipment",
-            "Fertilizers and pesticides",
-            "Irrigation systems",
-            "Agricultural consulting"
-          ]
-        },
-
-        mining: {
-          title: "Mosha Mining Equipment",
-          desc: "Mining equipment and industrial solutions.",
-          services: [
-            "Mining equipment",
-            "Spare parts",
-            "Technical support",
-            "Logistics services"
-          ]
-        },
-
-        energy: {
-          title: "Mosha Energy",
-          desc: "Power and generator solutions.",
-          services: [
-            "Generators",
-            "Solar systems",
-            "Industrial energy solutions",
-            "Installation & maintenance"
-          ]
-        },
-
-        importExport: {
-          title: "Mosha Import & Export",
-          desc: "International trade and shipping services.",
-          services: [
-            "International shipping",
-            "Custom clearance",
-            "Supply chain",
-            "Global trade"
-          ]
-        },
-
-        heavyMachinery: {
-          title: "Mosha Heavy Machinery",
-          desc: "Heavy equipment and construction machinery supply.",
-          services: [
-            "Excavators",
-            "Loaders",
-            "Road equipment",
-            "Spare parts"
-          ]
-        }
-      },
-
-      contactNow: "Contact Us Now"
-    }
+const en = {
+  nav: { home: 'Home', about: 'About', products: 'Products', offers: 'Offers', contact: 'Contact' },
+  common: {
+    exploreProducts: 'Explore products',
+    contactUs: 'Contact us',
+    whatsapp: 'WhatsApp',
+    chatWhatsapp: 'Chat on WhatsApp',
+    learnMore: 'Learn more',
+    viewAll: 'View all',
+    viewDetails: 'View details',
+    close: 'Close',
+    loading: 'Loading…',
+    retry: 'Try again',
+    price: 'Price',
+    origin: 'Origin',
+    specifications: 'Specifications',
+    category: 'Category',
+    all: 'All',
+    search: 'Search',
+    noResults: 'No results found',
+    inquireWhatsapp: 'Ask on WhatsApp',
+    sendInquiry: 'Send an inquiry',
+    backHome: 'Back to home',
+    language: 'العربية',
+    languageShort: 'ع',
+    menu: 'Menu',
+    previous: 'Previous',
+    next: 'Next',
+    video: 'Product video',
+    loadError: 'Could not load data. Please check your connection.',
+    whatsappProduct: 'Hello Mosha, I would like more information about: {{name}}',
+    whatsappOffer: 'Hello Mosha, I am interested in the offer: {{name}}',
+    whatsappGeneral: 'Hello Mosha, I would like to inquire about your products and services.',
   },
-
-  ar: {
-    translation: {
-      home: 'الرئيسية',
-      about: 'عن الشركة',
-      products: 'المنتجات والقطاعات',
-      contact: 'اتصل بنا',
-
-      aboutTitle: "من نحن",
-      aboutSubtitle: "تعرف أكثر على شركتنا وخدماتنا.",
-      aboutDescription: "نقدم خدمات وحلول عالية الجودة في عدة قطاعات مختلفة.",
-
-      contactBtn: "تواصل معنا",
-
-      visionTitle: "رؤيتنا",
-      visionText: "أن نصبح شركة رائدة في مجالات الهندسة والطب والزراعة والطاقة والتعدين.",
-
-      missionTitle: "رسالتنا",
-      missionText: "تقديم خدمات ومنتجات موثوقة بأعلى معايير الجودة.",
-
-      valuesTitle: "قيمنا",
-
-      strengthTitle: "نقاط قوتنا",
-
-      values: {
-        integrity: "النزاهة",
-        integrityDesc: "نعمل بشفافية واحترافية.",
-
-        quality: "الجودة",
-        qualityDesc: "نقدم أفضل الخدمات والمنتجات.",
-
-        reliability: "الموثوقية",
-        reliabilityDesc: "عملاؤنا يثقون في حلولنا.",
-
-        customerFocus: "التركيز على العميل",
-        customerFocusDesc: "رضا العميل أولويتنا."
-      },
-
-      strengths: {
-        global: "الانتشار العالمي",
-        globalDesc: "شراكات دولية قوية.",
-
-        logistics: "الخدمات اللوجستية",
-        logisticsDesc: "إدارة فعالة للشحن وسلاسل الإمداد.",
-
-        expertise: "الخبرة",
-        expertiseDesc: "فريق محترف وذو خبرة.",
-
-        support: "دعم 24/7",
-        supportDesc: "دعم متواصل للعملاء."
-      },
-
-      /* ====== SECTORS PAGES ====== */
-      sectorsPages: {
-        servicesTitle: "خدماتنا",
-
-        engineering: {
-          title: "موشا الهندسية",
-          desc: "نقدم حلول متكاملة في المقاولات والبنية التحتية والمشاريع الهندسية.",
-          services: [
-            "تنفيذ المشاريع الهندسية",
-            "المقاولات العامة",
-            "إدارة المشاريع",
-            "الاستشارات الهندسية",
-            "الأعمال المساحية"
-          ]
-        },
-
-        medical: {
-          title: "موشا الطبية",
-          desc: "توريد الأجهزة الطبية والمستلزمات الصحية.",
-          services: [
-            "أجهزة طبية حديثة",
-            "المستهلكات الطبية",
-            "خدمات الصيانة"
-          ]
-        },
-
-        agriculture: {
-          title: "موشا الزراعية",
-          desc: "حلول متكاملة للقطاع الزراعي الحديث.",
-          services: [
-            "معدات زراعية",
-            "أسمدة ومبيدات",
-            "أنظمة الري",
-            "استشارات زراعية"
-          ]
-        },
-
-        mining: {
-          title: "موشا لمعدات التعدين",
-          desc: "توفير معدات التعدين والحلول الصناعية.",
-          services: [
-            "معدات التعدين",
-            "قطع الغيار",
-            "الدعم الفني",
-            "الخدمات اللوجستية"
-          ]
-        },
-
-        energy: {
-          title: "موشا للطاقة",
-          desc: "حلول الطاقة والمولدات وأنظمة الكهرباء.",
-          services: [
-            "المولدات الكهربائية",
-            "أنظمة الطاقة الشمسية",
-            "حلول الطاقة الصناعية",
-            "التركيب والصيانة"
-          ]
-        },
-
-        importExport: {
-          title: "موشا للاستيراد والتصدير",
-          desc: "خدمات التجارة الدولية والشحن.",
-          services: [
-            "الشحن الدولي",
-            "التخليص الجمركي",
-            "سلاسل الإمداد",
-            "التجارة العالمية"
-          ]
-        },
-
-        heavyMachinery: {
-          title: "موشا للآليات الثقيلة",
-          desc: "توريد الآليات الثقيلة ومعدات البناء.",
-          services: [
-            "حفارات",
-            "شيولات",
-            "معدات الطرق",
-            "قطع الغيار"
-          ]
-        }
-      },
-
-      contactNow: "تواصل معنا الآن"
-    }
-  }
+  hero: {
+    badge: 'Your trusted partner in global trade',
+    title: 'Powering Sudan’s growth with world-class supply',
+    text: 'Mosha for Trading & Investment imports and supplies heavy machinery, medical equipment, energy, agricultural and mining solutions — sourced from trusted global manufacturers and delivered with care.',
+  },
+  stats: { partners: 'Partner countries', clients: 'Trusted clients', years: 'Years of experience', support: 'Customer support' },
+  home: {
+    offersEyebrow: 'Limited time',
+    offersTitle: 'Exclusive offers',
+    offersText: 'Special prices on selected equipment and supplies — while stocks last.',
+    sectorsEyebrow: 'What we do',
+    sectorsTitle: 'Our sectors',
+    sectorsText: 'Integrated trading and investment solutions across the industries that build the nation.',
+    latestEyebrow: 'Catalogue',
+    latestTitle: 'Latest products',
+    latestText: 'A selection of the newest equipment and supplies in our catalogue.',
+    whyEyebrow: 'Why Mosha',
+    whyTitle: 'A partner you can rely on',
+    whyText: 'From sourcing to shipping and after-sales support, we handle every step.',
+    ctaTitle: 'Ready to start a strong trade partnership?',
+    ctaText: 'Tell us what you need and our team will get back to you with a tailored quotation.',
+  },
+  sectors: {
+    engineering: {
+      name: 'Engineering',
+      title: 'Mosha Engineering',
+      short: 'Contracting, infrastructure and engineering project solutions.',
+      desc: 'Integrated solutions in contracting, infrastructure and engineering projects — from consultancy and surveying to full project execution.',
+      services: ['Engineering project execution', 'General contracting', 'Project management', 'Engineering consultancy', 'Surveying works'],
+    },
+    'medical-supplies': {
+      name: 'Medical supplies',
+      title: 'Mosha Medical',
+      short: 'Medical devices, hospital supplies and healthcare products.',
+      desc: 'Supply of modern medical equipment, hospital supplies and healthcare products, backed by maintenance and technical support.',
+      services: ['Modern medical devices', 'Medical consumables', 'Hospital furniture & equipment', 'Maintenance services'],
+    },
+    agriculture: {
+      name: 'Agriculture',
+      title: 'Mosha Agriculture',
+      short: 'Agricultural equipment, fertilizers and irrigation systems.',
+      desc: 'Modern agricultural solutions that raise productivity — equipment, inputs, irrigation and expert consulting.',
+      services: ['Agricultural equipment', 'Fertilizers and pesticides', 'Irrigation systems', 'Agricultural consulting'],
+    },
+    mining: {
+      name: 'Mining',
+      title: 'Mosha Mining Equipment',
+      short: 'Mining machinery, spare parts and industrial solutions.',
+      desc: 'Reliable mining equipment and industrial solutions with spare parts, technical support and logistics.',
+      services: ['Mining equipment', 'Spare parts', 'Technical support', 'Logistics services'],
+    },
+    energy: {
+      name: 'Energy',
+      title: 'Mosha Energy',
+      short: 'Generators, solar systems and power solutions.',
+      desc: 'Power solutions for homes, businesses and industry — generators, solar systems, installation and maintenance.',
+      services: ['Generators', 'Solar systems', 'Industrial energy solutions', 'Installation & maintenance'],
+    },
+    'import-export': {
+      name: 'Import & export',
+      title: 'Mosha Import & Export',
+      short: 'International trade, shipping and customs clearance.',
+      desc: 'End-to-end international trade services: sourcing, shipping, customs clearance and supply-chain management.',
+      services: ['International shipping', 'Customs clearance', 'Supply chain management', 'Global sourcing'],
+    },
+    'heavy-machinery': {
+      name: 'Heavy machinery',
+      title: 'Mosha Heavy Machinery',
+      short: 'Excavators, loaders and construction equipment.',
+      desc: 'Supply of heavy equipment and construction machinery from leading global brands, with genuine spare parts.',
+      services: ['Excavators', 'Loaders', 'Road equipment', 'Spare parts'],
+    },
+  },
+  sectorPage: {
+    services: 'Our services',
+    products: 'Products in this sector',
+    notFound: 'Sector not found',
+    otherSectors: 'Other sectors',
+  },
+  products: {
+    title: 'Products & sectors',
+    text: 'Browse our catalogue of equipment and supplies. Can’t find what you need? Ask us — we source on request.',
+    searchPlaceholder: 'Search products…',
+    countLabel: 'products',
+    empty: 'No products in this category yet.',
+  },
+  offers: {
+    title: 'Offers',
+    text: 'Our current promotions and special prices. Contact us quickly — offers are limited.',
+    empty: 'No active offers right now. Check back soon or contact us for a quotation.',
+    endsIn: 'Ends in',
+    endsOn: 'Until {{date}}',
+    order: 'Get this offer',
+    d: 'd',
+    h: 'h',
+    m: 'm',
+    s: 's',
+  },
+  about: {
+    title: 'About Mosha',
+    text: 'A Sudanese trading and investment company connecting global manufacturers with local markets.',
+    storyEyebrow: 'Our story',
+    storyTitle: 'Excellence in global trade',
+    story1:
+      'Mosha for Trading & Investment Co. Ltd. is an import-export company specializing in heavy machinery, medical supplies, energy, agriculture and mining equipment. With years of experience and a commitment to quality, we connect global markets to deliver excellence.',
+    story2:
+      'We are proud to be a trusted partner for businesses and institutions. Our team of experienced professionals ensures the highest quality standards in every transaction.',
+    visionTitle: 'Our vision',
+    visionText: 'To become a leading company in the engineering, medical, agriculture, mining and energy sectors in Sudan and the region.',
+    missionTitle: 'Our mission',
+    missionText: 'To deliver reliable services and products with the highest quality standards, at fair prices and on time.',
+    valuesTitle: 'Our values',
+    valuesText: 'The principles that guide everything we do.',
+    values: {
+      integrity: 'Integrity',
+      integrityText: 'We work with transparency and professionalism.',
+      quality: 'Quality',
+      qualityText: 'We deliver top-quality products and services.',
+      reliability: 'Reliability',
+      reliabilityText: 'Clients trust us for dependable solutions.',
+      customer: 'Customer focus',
+      customerText: 'Customer satisfaction is our priority.',
+    },
+    strengths: {
+      global: 'Global reach',
+      globalText: 'Strong partnerships with international manufacturers.',
+      logistics: 'Logistics',
+      logisticsText: 'Efficient shipping, clearance and supply chain.',
+      expertise: 'Expertise',
+      expertiseText: 'A professional and experienced team.',
+      support: 'Continuous support',
+      supportText: 'We are with you before and after the sale.',
+    },
+  },
+  contact: {
+    title: 'Contact us',
+    text: 'We’re here to help. Send us a message or reach us directly on WhatsApp.',
+    infoTitle: 'Get in touch',
+    formTitle: 'Send us a message',
+    phone: 'Phone',
+    email: 'Email',
+    address: 'Address',
+    hours: 'Working hours',
+    name: 'Full name',
+    emailField: 'Email address',
+    phoneField: 'Phone (optional)',
+    subject: 'Subject',
+    chooseSubject: 'Choose a subject',
+    message: 'Your message',
+    subjects: {
+      general: 'General inquiry',
+      products: 'Product inquiry',
+      offers: 'Offer inquiry',
+      partnership: 'Business partnership',
+      other: 'Other',
+    },
+    send: 'Send message',
+    sending: 'Sending…',
+    success: 'Thank you! Your message has been sent. We will contact you soon.',
+    errorGeneric: 'Sorry, the message could not be sent. Please try again or contact us on WhatsApp.',
+    errorRate: 'You have sent several messages. Please wait a few minutes and try again.',
+    errorInvalid: 'Please check the highlighted fields.',
+    privacyNote: 'We only use your details to reply to your message.',
+    mapTitle: 'Our location on the map',
+  },
+  footer: {
+    text: 'Your trusted partner in global trade — heavy machinery, medical supplies, energy and more.',
+    links: 'Quick links',
+    sectors: 'Sectors',
+    contact: 'Contact',
+    rights: 'All rights reserved.',
+    privacy: 'Privacy policy',
+  },
+  privacy: {
+    title: 'Privacy policy',
+    updated: 'Last updated: November 2026',
+    p1: 'We respect your privacy. This page explains what information we collect on moshaltd.com and how we use it.',
+    h2: 'Information we collect',
+    p2: 'When you use the contact form we collect your name, email, phone number (optional) and message. We use this information only to answer your inquiry.',
+    h3: 'Analytics',
+    p3: 'We use Google Analytics to understand how visitors use the site, in aggregate. Visitors in the EU/UK are not tracked unless they consent.',
+    h4: 'Sharing',
+    p4: 'We do not sell or share your personal information with third parties, except with service providers needed to run the site (hosting, email delivery).',
+    h5: 'Contact',
+    p5: 'For any privacy question or to request deletion of your data, email us at {{email}}.',
+  },
+  notFound: { title: 'Page not found', text: 'The page you are looking for doesn’t exist or has been moved.' },
+  admin: {
+    title: 'Admin dashboard',
+    signInTitle: 'Admin sign in',
+    signInText: 'Sign in with your authorized Google account to manage products, offers and messages.',
+    google: 'Continue with Google',
+    notAllowedTitle: 'Access denied',
+    notAllowedText: 'The account {{email}} is not authorized to manage this website. Please sign in with an admin account.',
+    switchAccount: 'Use another account',
+    signOut: 'Sign out',
+    viewSite: 'View site',
+    secureNote: 'Protected by Google sign-in and database security rules.',
+    tabs: { products: 'Products', offers: 'Offers', messages: 'Messages' },
+    add: 'Add',
+    addProduct: 'Add product',
+    editProduct: 'Edit product',
+    addOffer: 'Add offer',
+    editOffer: 'Edit offer',
+    save: 'Save',
+    saving: 'Saving…',
+    cancel: 'Cancel',
+    edit: 'Edit',
+    delete: 'Delete',
+    confirmDelete: 'Are you sure you want to delete “{{name}}”? This cannot be undone.',
+    saved: 'Saved successfully',
+    deleted: 'Deleted',
+    failed: 'Operation failed: {{msg}}',
+    searchPlaceholder: 'Search…',
+    empty: 'Nothing here yet.',
+    english: 'English',
+    arabic: 'Arabic',
+    name: 'Name',
+    description: 'Description',
+    specifications: 'Specifications',
+    specsHint: 'Separate items with |  e.g. Power: 500kVA | Voltage: 400V',
+    category: 'Category',
+    price: 'Price',
+    pricePlaceholder: 'e.g. $1,000 or “On request”',
+    origin: 'Country of origin',
+    mainImage: 'Main image',
+    gallery: 'Extra images',
+    video: 'YouTube video link',
+    videoInvalid: 'This doesn’t look like a valid YouTube link.',
+    upload: 'Upload image',
+    uploadMany: 'Upload images',
+    uploading: 'Uploading…',
+    dropHint: 'JPG, PNG or WebP. Images are optimized automatically.',
+    remove: 'Remove',
+    makeMain: 'Set as main',
+    imageRequired: 'Please upload a main image.',
+    uploadFailed: 'Upload failed: {{msg}}',
+    offerTitle: 'Offer title',
+    badge: 'Badge (e.g. -20%)',
+    priceOld: 'Old price',
+    priceNew: 'Offer price',
+    startsAt: 'Starts',
+    endsAt: 'Ends',
+    active: 'Active (visible on the site)',
+    sortOrder: 'Order (lower shows first)',
+    status: { live: 'Live', scheduled: 'Scheduled', expired: 'Expired', hidden: 'Hidden' },
+    markRead: 'Mark as read',
+    markUnread: 'Mark as unread',
+    reply: 'Reply by email',
+    unread: 'Unread',
+    messagesEmpty: 'No messages yet. Messages sent from the contact form will appear here.',
+    messagesSetup: 'Messages are saved here once SUPABASE_SERVICE_ROLE_KEY is set in Vercel.',
+    setupNeeded: 'Database setup needed: run supabase/setup.sql in the Supabase SQL editor.',
+  },
 };
+
+type Dict = typeof en;
+
+const ar: Dict = {
+  nav: { home: 'الرئيسية', about: 'من نحن', products: 'المنتجات', offers: 'العروض', contact: 'تواصل معنا' },
+  common: {
+    exploreProducts: 'تصفّح المنتجات',
+    contactUs: 'تواصل معنا',
+    whatsapp: 'واتساب',
+    chatWhatsapp: 'راسلنا على واتساب',
+    learnMore: 'اعرف المزيد',
+    viewAll: 'عرض الكل',
+    viewDetails: 'عرض التفاصيل',
+    close: 'إغلاق',
+    loading: 'جارٍ التحميل…',
+    retry: 'إعادة المحاولة',
+    price: 'السعر',
+    origin: 'بلد المنشأ',
+    specifications: 'المواصفات',
+    category: 'الفئة',
+    all: 'الكل',
+    search: 'بحث',
+    noResults: 'لا توجد نتائج',
+    inquireWhatsapp: 'استفسر عبر واتساب',
+    sendInquiry: 'أرسل استفساراً',
+    backHome: 'العودة للرئيسية',
+    language: 'English',
+    languageShort: 'EN',
+    menu: 'القائمة',
+    previous: 'السابق',
+    next: 'التالي',
+    video: 'فيديو المنتج',
+    loadError: 'تعذّر تحميل البيانات. يرجى التحقق من الاتصال.',
+    whatsappProduct: 'مرحباً موشا، أرغب في معرفة المزيد عن: {{name}}',
+    whatsappOffer: 'مرحباً موشا، أنا مهتم بالعرض: {{name}}',
+    whatsappGeneral: 'مرحباً موشا، أرغب في الاستفسار عن منتجاتكم وخدماتكم.',
+  },
+  hero: {
+    badge: 'شريكك الموثوق في التجارة العالمية',
+    title: 'نُمكّن نمو السودان بإمدادات عالمية المستوى',
+    text: 'تستورد شركة موشا للتجارة والاستثمار وتورّد الآليات الثقيلة والأجهزة الطبية وحلول الطاقة والزراعة والتعدين — من أفضل المصنّعين حول العالم، وبخدمة تليق بعملائنا.',
+  },
+  stats: { partners: 'دولة شريكة', clients: 'عميل موثوق', years: 'عاماً من الخبرة', support: 'دعم متواصل' },
+  home: {
+    offersEyebrow: 'لفترة محدودة',
+    offersTitle: 'عروض حصرية',
+    offersText: 'أسعار خاصة على معدات ومستلزمات مختارة — حتى نفاد الكمية.',
+    sectorsEyebrow: 'مجالات عملنا',
+    sectorsTitle: 'قطاعاتنا',
+    sectorsText: 'حلول تجارية واستثمارية متكاملة في القطاعات التي تبني الوطن.',
+    latestEyebrow: 'الكتالوج',
+    latestTitle: 'أحدث المنتجات',
+    latestText: 'مجموعة مختارة من أحدث المعدات والمستلزمات في كتالوجنا.',
+    whyEyebrow: 'لماذا موشا',
+    whyTitle: 'شريك يمكنك الاعتماد عليه',
+    whyText: 'من التوريد إلى الشحن وخدمات ما بعد البيع، نتولى كل خطوة.',
+    ctaTitle: 'جاهز لبدء شراكة تجارية متينة؟',
+    ctaText: 'أخبرنا بما تحتاجه وسيتواصل معك فريقنا بعرض سعر مخصّص.',
+  },
+  sectors: {
+    engineering: {
+      name: 'الهندسة',
+      title: 'موشا الهندسية',
+      short: 'حلول المقاولات والبنية التحتية والمشاريع الهندسية.',
+      desc: 'حلول متكاملة في المقاولات والبنية التحتية والمشاريع الهندسية — من الاستشارات والمساحة حتى التنفيذ الكامل.',
+      services: ['تنفيذ المشاريع الهندسية', 'المقاولات العامة', 'إدارة المشاريع', 'الاستشارات الهندسية', 'الأعمال المساحية'],
+    },
+    'medical-supplies': {
+      name: 'المستلزمات الطبية',
+      title: 'موشا الطبية',
+      short: 'الأجهزة الطبية ومستلزمات المستشفيات والمنتجات الصحية.',
+      desc: 'توريد الأجهزة الطبية الحديثة ومستلزمات المستشفيات والمنتجات الصحية، مع خدمات الصيانة والدعم الفني.',
+      services: ['أجهزة طبية حديثة', 'المستهلكات الطبية', 'أثاث ومعدات المستشفيات', 'خدمات الصيانة'],
+    },
+    agriculture: {
+      name: 'الزراعة',
+      title: 'موشا الزراعية',
+      short: 'المعدات الزراعية والأسمدة وأنظمة الري.',
+      desc: 'حلول زراعية حديثة ترفع الإنتاجية — معدات ومدخلات وأنظمة ري واستشارات متخصصة.',
+      services: ['معدات زراعية', 'أسمدة ومبيدات', 'أنظمة الري', 'استشارات زراعية'],
+    },
+    mining: {
+      name: 'التعدين',
+      title: 'موشا لمعدات التعدين',
+      short: 'آليات التعدين وقطع الغيار والحلول الصناعية.',
+      desc: 'معدات تعدين موثوقة وحلول صناعية مع قطع الغيار والدعم الفني والخدمات اللوجستية.',
+      services: ['معدات التعدين', 'قطع الغيار', 'الدعم الفني', 'الخدمات اللوجستية'],
+    },
+    energy: {
+      name: 'الطاقة',
+      title: 'موشا للطاقة',
+      short: 'المولدات وأنظمة الطاقة الشمسية وحلول الكهرباء.',
+      desc: 'حلول طاقة للمنازل والشركات والمصانع — مولدات وأنظمة طاقة شمسية مع التركيب والصيانة.',
+      services: ['المولدات الكهربائية', 'أنظمة الطاقة الشمسية', 'حلول الطاقة الصناعية', 'التركيب والصيانة'],
+    },
+    'import-export': {
+      name: 'الاستيراد والتصدير',
+      title: 'موشا للاستيراد والتصدير',
+      short: 'التجارة الدولية والشحن والتخليص الجمركي.',
+      desc: 'خدمات تجارة دولية متكاملة: التوريد والشحن والتخليص الجمركي وإدارة سلاسل الإمداد.',
+      services: ['الشحن الدولي', 'التخليص الجمركي', 'إدارة سلاسل الإمداد', 'التوريد العالمي'],
+    },
+    'heavy-machinery': {
+      name: 'الآليات الثقيلة',
+      title: 'موشا للآليات الثقيلة',
+      short: 'الحفارات والشيولات ومعدات البناء.',
+      desc: 'توريد الآليات الثقيلة ومعدات البناء من أشهر العلامات العالمية، مع قطع غيار أصلية.',
+      services: ['حفارات', 'شيولات', 'معدات الطرق', 'قطع الغيار'],
+    },
+  },
+  sectorPage: {
+    services: 'خدماتنا',
+    products: 'منتجات هذا القطاع',
+    notFound: 'القطاع غير موجود',
+    otherSectors: 'قطاعات أخرى',
+  },
+  products: {
+    title: 'المنتجات والقطاعات',
+    text: 'تصفّح كتالوج المعدات والمستلزمات. لم تجد ما تبحث عنه؟ اسألنا — نوفّر حسب الطلب.',
+    searchPlaceholder: 'ابحث عن منتج…',
+    countLabel: 'منتج',
+    empty: 'لا توجد منتجات في هذه الفئة حالياً.',
+  },
+  offers: {
+    title: 'العروض',
+    text: 'عروضنا الحالية وأسعارنا الخاصة. سارع بالتواصل — العروض محدودة.',
+    empty: 'لا توجد عروض نشطة حالياً. تابعنا قريباً أو تواصل معنا لطلب عرض سعر.',
+    endsIn: 'ينتهي خلال',
+    endsOn: 'حتى {{date}}',
+    order: 'اطلب العرض',
+    d: 'ي',
+    h: 'س',
+    m: 'د',
+    s: 'ث',
+  },
+  about: {
+    title: 'من نحن',
+    text: 'شركة سودانية للتجارة والاستثمار تربط المصنّعين العالميين بالأسواق المحلية.',
+    storyEyebrow: 'قصتنا',
+    storyTitle: 'التميّز في التجارة العالمية',
+    story1:
+      'شركة موشا للتجارة والاستثمار المحدودة شركة استيراد وتصدير متخصصة في الآليات الثقيلة والمستلزمات الطبية ومعدات الطاقة والزراعة والتعدين. بخبرة سنوات والتزام راسخ بالجودة، نربط الأسواق العالمية لنقدّم التميّز.',
+    story2: 'نفخر بكوننا شريكاً موثوقاً للشركات والمؤسسات. يضمن فريقنا من المحترفين ذوي الخبرة أعلى معايير الجودة في كل معاملة.',
+    visionTitle: 'رؤيتنا',
+    visionText: 'أن نصبح شركة رائدة في قطاعات الهندسة والطب والزراعة والتعدين والطاقة في السودان والمنطقة.',
+    missionTitle: 'رسالتنا',
+    missionText: 'تقديم خدمات ومنتجات موثوقة بأعلى معايير الجودة، بأسعار عادلة وفي الوقت المحدد.',
+    valuesTitle: 'قيمنا',
+    valuesText: 'المبادئ التي توجّه كل ما نقوم به.',
+    values: {
+      integrity: 'النزاهة',
+      integrityText: 'نعمل بشفافية واحترافية.',
+      quality: 'الجودة',
+      qualityText: 'نقدّم أفضل المنتجات والخدمات.',
+      reliability: 'الموثوقية',
+      reliabilityText: 'عملاؤنا يثقون في حلولنا.',
+      customer: 'التركيز على العميل',
+      customerText: 'رضا العميل أولويتنا.',
+    },
+    strengths: {
+      global: 'انتشار عالمي',
+      globalText: 'شراكات قوية مع مصنّعين دوليين.',
+      logistics: 'خدمات لوجستية',
+      logisticsText: 'شحن وتخليص وسلاسل إمداد فعّالة.',
+      expertise: 'خبرة',
+      expertiseText: 'فريق محترف وذو خبرة.',
+      support: 'دعم متواصل',
+      supportText: 'معك قبل البيع وبعده.',
+    },
+  },
+  contact: {
+    title: 'تواصل معنا',
+    text: 'نحن هنا لمساعدتك. أرسل لنا رسالة أو تواصل معنا مباشرة عبر واتساب.',
+    infoTitle: 'بيانات التواصل',
+    formTitle: 'أرسل لنا رسالة',
+    phone: 'الهاتف',
+    email: 'البريد الإلكتروني',
+    address: 'العنوان',
+    hours: 'ساعات العمل',
+    name: 'الاسم الكامل',
+    emailField: 'البريد الإلكتروني',
+    phoneField: 'رقم الهاتف (اختياري)',
+    subject: 'الموضوع',
+    chooseSubject: 'اختر الموضوع',
+    message: 'رسالتك',
+    subjects: {
+      general: 'استفسار عام',
+      products: 'استفسار عن منتج',
+      offers: 'استفسار عن عرض',
+      partnership: 'شراكة تجارية',
+      other: 'أخرى',
+    },
+    send: 'إرسال الرسالة',
+    sending: 'جارٍ الإرسال…',
+    success: 'شكراً لك! تم إرسال رسالتك بنجاح وسنتواصل معك قريباً.',
+    errorGeneric: 'عذراً، تعذّر إرسال الرسالة. حاول مرة أخرى أو تواصل معنا عبر واتساب.',
+    errorRate: 'لقد أرسلت عدة رسائل. يرجى الانتظار بضع دقائق ثم المحاولة مجدداً.',
+    errorInvalid: 'يرجى مراجعة الحقول المطلوبة.',
+    privacyNote: 'نستخدم بياناتك فقط للرد على رسالتك.',
+    mapTitle: 'موقعنا على الخريطة',
+  },
+  footer: {
+    text: 'شريكك الموثوق في التجارة العالمية — آليات ثقيلة ومستلزمات طبية وطاقة والمزيد.',
+    links: 'روابط سريعة',
+    sectors: 'القطاعات',
+    contact: 'التواصل',
+    rights: 'جميع الحقوق محفوظة.',
+    privacy: 'سياسة الخصوصية',
+  },
+  privacy: {
+    title: 'سياسة الخصوصية',
+    updated: 'آخر تحديث: نوفمبر 2026',
+    p1: 'نحترم خصوصيتك. توضّح هذه الصفحة المعلومات التي نجمعها في موقع moshaltd.com وكيف نستخدمها.',
+    h2: 'المعلومات التي نجمعها',
+    p2: 'عند استخدام نموذج التواصل نجمع اسمك وبريدك الإلكتروني ورقم هاتفك (اختياري) ورسالتك، ونستخدمها فقط للرد على استفسارك.',
+    h3: 'الإحصائيات',
+    p3: 'نستخدم Google Analytics لفهم كيفية استخدام الزوار للموقع بشكل إجمالي. لا يتم تتبع زوار الاتحاد الأوروبي والمملكة المتحدة دون موافقتهم.',
+    h4: 'مشاركة البيانات',
+    p4: 'لا نبيع بياناتك ولا نشاركها مع أي طرف ثالث، باستثناء مزوّدي الخدمات اللازمين لتشغيل الموقع (الاستضافة وإرسال البريد).',
+    h5: 'التواصل',
+    p5: 'لأي سؤال حول الخصوصية أو لطلب حذف بياناتك، راسلنا على {{email}}.',
+  },
+  notFound: { title: 'الصفحة غير موجودة', text: 'الصفحة التي تبحث عنها غير موجودة أو تم نقلها.' },
+  admin: {
+    title: 'لوحة التحكم',
+    signInTitle: 'دخول الإدارة',
+    signInText: 'سجّل الدخول بحساب Google المصرّح له لإدارة المنتجات والعروض والرسائل.',
+    google: 'المتابعة باستخدام Google',
+    notAllowedTitle: 'غير مصرّح',
+    notAllowedText: 'الحساب {{email}} غير مصرّح له بإدارة الموقع. يرجى الدخول بحساب مدير.',
+    switchAccount: 'استخدام حساب آخر',
+    signOut: 'تسجيل الخروج',
+    viewSite: 'عرض الموقع',
+    secureNote: 'محمي بتسجيل دخول Google وقواعد أمان قاعدة البيانات.',
+    tabs: { products: 'المنتجات', offers: 'العروض', messages: 'الرسائل' },
+    add: 'إضافة',
+    addProduct: 'إضافة منتج',
+    editProduct: 'تعديل المنتج',
+    addOffer: 'إضافة عرض',
+    editOffer: 'تعديل العرض',
+    save: 'حفظ',
+    saving: 'جارٍ الحفظ…',
+    cancel: 'إلغاء',
+    edit: 'تعديل',
+    delete: 'حذف',
+    confirmDelete: 'هل أنت متأكد من حذف «{{name}}»؟ لا يمكن التراجع عن ذلك.',
+    saved: 'تم الحفظ بنجاح',
+    deleted: 'تم الحذف',
+    failed: 'فشلت العملية: {{msg}}',
+    searchPlaceholder: 'بحث…',
+    empty: 'لا يوجد شيء هنا بعد.',
+    english: 'بالإنجليزية',
+    arabic: 'بالعربية',
+    name: 'الاسم',
+    description: 'الوصف',
+    specifications: 'المواصفات',
+    specsHint: 'افصل بين البنود بعلامة |  مثال: القدرة: 500 كيلو فولت أمبير | الجهد: 400 فولت',
+    category: 'الفئة',
+    price: 'السعر',
+    pricePlaceholder: 'مثال: 1,000$ أو «حسب الطلب»',
+    origin: 'بلد المنشأ',
+    mainImage: 'الصورة الرئيسية',
+    gallery: 'صور إضافية',
+    video: 'رابط فيديو يوتيوب',
+    videoInvalid: 'هذا لا يبدو رابط يوتيوب صحيحاً.',
+    upload: 'رفع صورة',
+    uploadMany: 'رفع صور',
+    uploading: 'جارٍ الرفع…',
+    dropHint: 'JPG أو PNG أو WebP. يتم تحسين الصور تلقائياً.',
+    remove: 'إزالة',
+    makeMain: 'اجعلها الرئيسية',
+    imageRequired: 'يرجى رفع الصورة الرئيسية.',
+    uploadFailed: 'فشل الرفع: {{msg}}',
+    offerTitle: 'عنوان العرض',
+    badge: 'الشارة (مثال: خصم 20%)',
+    priceOld: 'السعر القديم',
+    priceNew: 'سعر العرض',
+    startsAt: 'يبدأ في',
+    endsAt: 'ينتهي في',
+    active: 'مفعّل (يظهر في الموقع)',
+    sortOrder: 'الترتيب (الأصغر يظهر أولاً)',
+    status: { live: 'ظاهر', scheduled: 'مجدول', expired: 'منتهي', hidden: 'مخفي' },
+    markRead: 'تحديد كمقروءة',
+    markUnread: 'تحديد كغير مقروءة',
+    reply: 'الرد بالبريد',
+    unread: 'غير مقروءة',
+    messagesEmpty: 'لا توجد رسائل بعد. ستظهر هنا الرسائل المرسلة من نموذج التواصل.',
+    messagesSetup: 'تُحفظ الرسائل هنا بعد إضافة SUPABASE_SERVICE_ROLE_KEY في Vercel.',
+    setupNeeded: 'يلزم إعداد قاعدة البيانات: شغّل ملف supabase/setup.sql في محرر SQL في Supabase.',
+  },
+};
+
+const applyDocumentLanguage = (lng: string) => {
+  const isAr = lng.startsWith('ar');
+  document.documentElement.lang = isAr ? 'ar' : 'en';
+  document.documentElement.dir = isAr ? 'rtl' : 'ltr';
+};
+
+i18n.on('languageChanged', applyDocumentLanguage);
 
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    resources,
-    fallbackLng: 'en',
-    interpolation: {
-      escapeValue: false
-    },
+    resources: { en: { translation: en }, ar: { translation: ar } },
+    supportedLngs: ['ar', 'en'],
+    nonExplicitSupportedLngs: true,
+    load: 'languageOnly',
+    fallbackLng: 'ar',
+    interpolation: { escapeValue: false },
     detection: {
-      order: ['localStorage', 'navigator'],
-      caches: ['localStorage']
-    }
+      order: ['querystring', 'localStorage', 'navigator'],
+      lookupQuerystring: 'lang',
+      caches: ['localStorage'],
+    },
   });
+
+applyDocumentLanguage(i18n.resolvedLanguage || i18n.language || 'ar');
 
 export default i18n;

@@ -1,233 +1,144 @@
-import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Eye, Target, Heart, Shield, Globe, Truck, Award, Headphones, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Award, Eye, Globe, Handshake, Headset, Heart, ShieldCheck, Target, Truck, Users } from 'lucide-react';
+import { useLang } from '../hooks/useLang';
+import { useSeo } from '../hooks/useSeo';
+import { whatsappLink } from '../config/site';
+import { LogoMark, PageHero, Reveal, SectionHeading, WhatsAppIcon } from '../components/ui';
 
-const AboutPage = () => {
-  const { t, i18n } = useTranslation();
-  const isRTL = i18n.language === 'ar';
+export default function AboutPage() {
+  const { t, isAr } = useLang();
+  useSeo(t('about.title'), t('about.text'));
+  const Arrow = isAr ? ArrowLeft : ArrowRight;
 
   const values = [
-    {
-      icon: Shield,
-      title: t('values.integrity'),
-      description: t('values.integrityDesc')
-    },
-    {
-      icon: Award,
-      title: t('values.quality'),
-      description: t('values.qualityDesc')
-    },
-    {
-      icon: Globe,
-      title: t('values.reliability'),
-      description: t('values.reliabilityDesc')
-    },
-    {
-      icon: Heart,
-      title: t('values.customerFocus'),
-      description: t('values.customerFocusDesc')
-    }
+    { icon: ShieldCheck, title: t('about.values.integrity'), text: t('about.values.integrityText') },
+    { icon: Award, title: t('about.values.quality'), text: t('about.values.qualityText') },
+    { icon: Handshake, title: t('about.values.reliability'), text: t('about.values.reliabilityText') },
+    { icon: Heart, title: t('about.values.customer'), text: t('about.values.customerText') },
   ];
-
   const strengths = [
-    {
-      icon: Globe,
-      title: t('strengths.global'),
-      description: t('strengths.globalDesc')
-    },
-    {
-      icon: Truck,
-      title: t('strengths.logistics'),
-      description: t('strengths.logisticsDesc')
-    },
-    {
-      icon: Award,
-      title: t('strengths.expertise'),
-      description: t('strengths.expertiseDesc')
-    },
-    {
-      icon: Headphones,
-      title: t('strengths.support'),
-      description: t('strengths.supportDesc')
-    }
+    { icon: Globe, title: t('about.strengths.global'), text: t('about.strengths.globalText') },
+    { icon: Truck, title: t('about.strengths.logistics'), text: t('about.strengths.logisticsText') },
+    { icon: Users, title: t('about.strengths.expertise'), text: t('about.strengths.expertiseText') },
+    { icon: Headset, title: t('about.strengths.support'), text: t('about.strengths.supportText') },
   ];
 
   return (
-    <div dir={isRTL ? 'rtl' : 'ltr'}>
-      {/* Hero Section */}
-      <section className="relative py-24 bg-gradient-to-br from-blue-900 via-blue-800 to-slate-900 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-full h-full" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}></div>
-        </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            {t('aboutTitle')}
-          </h1>
-          <p className="text-xl text-blue-100 max-w-3xl mx-auto">
-            {t('aboutSubtitle')}
-          </p>
-        </div>
-      </section>
+    <>
+      <PageHero title={t('about.title')} text={t('about.text')} />
 
-      {/* About Content */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                {t('aboutTitle')}
-              </h2>
-              <p className="text-lg text-gray-600 leading-relaxed mb-6">
-                {t('aboutDescription')}
-              </p>
-              <p className="text-lg text-gray-600 leading-relaxed mb-8">
-                {isRTL 
-                  ? 'نحن نفخر بكوننا شريكًا موثوقًا للشركات والمؤسسات في جميع أنحاء العالم. فريقنا من المحترفين ذوي الخبرة يضمن أعلى مستويات الجودة في جميع معاملاتنا.'
-                  : 'We pride ourselves on being a trusted partner for businesses and institutions worldwide. Our team of experienced professionals ensures the highest quality standards in all our transactions.'}
-              </p>
-              <Link
-                to="/contact"
-                className={`inline-flex items-center gap-2 px-6 py-3 bg-blue-900 text-white rounded-xl font-medium hover:bg-blue-800 transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
-              >
-                {t('contactBtn')}
-                <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
-              </Link>
-            </div>
-            <div className="relative">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-4">
-                  <div className="bg-blue-50 rounded-2xl p-6">
-                    <Eye className="w-10 h-10 text-blue-900 mb-3" />
-                    <h3 className="text-lg font-bold text-gray-900">{t('visionTitle')}</h3>
-                  </div>
-                  <div className="bg-emerald-50 rounded-2xl p-6">
-                    <Target className="w-10 h-10 text-emerald-600 mb-3" />
-                    <h3 className="text-lg font-bold text-gray-900">{t('missionTitle')}</h3>
-                  </div>
+      {/* Story */}
+      <section className="section">
+        <div className="container grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <Reveal>
+            <p className="eyebrow mb-3">{t('about.storyEyebrow')}</p>
+            <h2 className="heading">{t('about.storyTitle')}</h2>
+            <p className="mt-6 text-base leading-8 text-slate-600 sm:text-lg">{t('about.story1')}</p>
+            <p className="mt-4 text-base leading-8 text-slate-600 sm:text-lg">{t('about.story2')}</p>
+            <Link to="/contact" className="btn-primary btn-lg mt-8">
+              {t('common.contactUs')}
+              <Arrow className="h-5 w-5" aria-hidden />
+            </Link>
+          </Reveal>
+          <Reveal delay={120}>
+            <div className="relative mx-auto aspect-square max-w-md">
+              <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-brand-100 via-white to-cyan-50" />
+              <div className="absolute inset-[14%] grid place-items-center rounded-full bg-white shadow-lift">
+                <LogoMark className="h-[80%] w-[80%]" />
+              </div>
+              <div className="card absolute -bottom-4 start-0 flex items-center gap-3 px-5 py-4 sm:start-[-1rem]">
+                <Globe className="h-8 w-8 text-brand-600" aria-hidden />
+                <div>
+                  <p className="text-2xl font-extrabold text-ink" dir="ltr">10+</p>
+                  <p className="text-xs text-slate-500">{t('stats.partners')}</p>
                 </div>
-                <div className="space-y-4 pt-8">
-                  <div className="bg-amber-50 rounded-2xl p-6">
-                    <Heart className="w-10 h-10 text-amber-600 mb-3" />
-                    <h3 className="text-lg font-bold text-gray-900">{t('valuesTitle')}</h3>
-                  </div>
-                  <div className="bg-purple-50 rounded-2xl p-6">
-                    <Shield className="w-10 h-10 text-purple-600 mb-3" />
-                    <h3 className="text-lg font-bold text-gray-900">{isRTL ? 'التزامنا' : 'Our Commitment'}</h3>
-                  </div>
+              </div>
+              <div className="card absolute -top-4 end-0 flex items-center gap-3 px-5 py-4 sm:end-[-1rem]">
+                <Users className="h-8 w-8 text-brand-600" aria-hidden />
+                <div>
+                  <p className="text-2xl font-extrabold text-ink" dir="ltr">500+</p>
+                  <p className="text-xs text-slate-500">{t('stats.clients')}</p>
                 </div>
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* Vision & Mission */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Vision */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg">
-              <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
-                <Eye className="w-8 h-8 text-blue-900" />
+      {/* Vision & mission */}
+      <section className="section bg-slate-50">
+        <div className="container grid gap-6 md:grid-cols-2">
+          {[
+            { icon: Eye, title: t('about.visionTitle'), text: t('about.visionText') },
+            { icon: Target, title: t('about.missionTitle'), text: t('about.missionText') },
+          ].map((b, i) => (
+            <Reveal key={b.title} delay={i * 100} className="h-full">
+              <div className="card h-full p-8 sm:p-10">
+                <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand-600 text-white">
+                  <b.icon className="h-7 w-7" aria-hidden />
+                </span>
+                <h3 className="mt-6 text-2xl font-extrabold">{b.title}</h3>
+                <p className="mt-3 text-base leading-8 text-slate-600">{b.text}</p>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">{t('visionTitle')}</h3>
-              <p className="text-gray-600 leading-relaxed">
-                {t('visionText')}
-              </p>
-            </div>
-
-            {/* Mission */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg">
-              <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6">
-                <Target className="w-8 h-8 text-emerald-600" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">{t('missionTitle')}</h3>
-              <p className="text-gray-600 leading-relaxed">
-                {t('missionText')}
-              </p>
-            </div>
-          </div>
+            </Reveal>
+          ))}
         </div>
       </section>
 
       {/* Values */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`text-center mb-16 ${isRTL ? 'rtl' : 'ltr'}`}>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              {t('valuesTitle')}
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              {isRTL ? 'المبادئ التي توجه كل ما نقوم به' : 'The principles that guide everything we do'}
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
-              <div
-                key={index}
-                className="text-center p-8 rounded-2xl bg-gray-50 hover:bg-blue-50 transition-colors"
-              >
-                <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                  <value.icon className="w-8 h-8 text-blue-900" />
+      <section className="section">
+        <div className="container">
+          <Reveal>
+            <SectionHeading title={t('about.valuesTitle')} text={t('about.valuesText')} />
+          </Reveal>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {values.map((v, i) => (
+              <Reveal key={v.title} delay={i * 80} className="h-full">
+                <div className="h-full rounded-2xl border border-slate-200 p-6 text-center transition hover:border-brand-300 hover:bg-brand-50/40">
+                  <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-brand-50 text-brand-600">
+                    <v.icon className="h-7 w-7" aria-hidden />
+                  </span>
+                  <h3 className="mt-5 text-lg font-bold">{v.title}</h3>
+                  <p className="mt-2 text-sm leading-7 text-slate-600">{v.text}</p>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-3">{value.title}</h3>
-                <p className="text-gray-600 text-sm">{value.description}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Operational Strength */}
-      <section className="py-24 bg-gradient-to-br from-blue-900 to-blue-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`text-center mb-16 ${isRTL ? 'rtl' : 'ltr'}`}>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              {t('strengthTitle')}
-            </h2>
-            <p className="text-lg text-blue-100 max-w-2xl mx-auto">
-              {isRTL ? 'ما يجعلنا متميزين في السوق' : 'What makes us stand out in the market'}
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {strengths.map((strength, index) => (
-              <div
-                key={index}
-                className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20"
-              >
-                <strength.icon className="w-12 h-12 text-white mb-4" />
-                <h3 className="text-lg font-bold text-white mb-3">{strength.title}</h3>
-                <p className="text-blue-100 text-sm">{strength.description}</p>
-              </div>
+      {/* Strengths */}
+      <section className="relative isolate overflow-hidden bg-ink py-20 text-white sm:py-24">
+        <div className="bg-grid absolute inset-0 -z-10 opacity-70" />
+        <div className="container">
+          <Reveal>
+            <div className="mx-auto mb-12 max-w-2xl text-center">
+              <h2 className="text-3xl font-extrabold text-white sm:text-4xl">{t('home.whyTitle')}</h2>
+              <p className="mt-4 text-slate-300">{t('home.whyText')}</p>
+            </div>
+          </Reveal>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {strengths.map((s, i) => (
+              <Reveal key={s.title} delay={i * 80} className="h-full">
+                <div className="h-full rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+                  <s.icon className="h-9 w-9 text-brand-300" aria-hidden />
+                  <h3 className="mt-4 text-lg font-bold text-white">{s.title}</h3>
+                  <p className="mt-2 text-sm leading-7 text-slate-300">{s.text}</p>
+                </div>
+              </Reveal>
             ))}
           </div>
+          <div className="mt-12 flex flex-col justify-center gap-3 sm:flex-row">
+            <a href={whatsappLink(t('common.whatsappGeneral'))} target="_blank" rel="noopener noreferrer" className="btn-whatsapp btn-lg">
+              <WhatsAppIcon />
+              {t('common.chatWhatsapp')}
+            </a>
+            <Link to="/products" className="btn-ghost-light btn-lg">
+              {t('common.exploreProducts')}
+            </Link>
+          </div>
         </div>
       </section>
-
-      {/* CTA */}
-      <section className="py-24 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-            {isRTL ? 'هل تريد معرفة المزيد عنا؟' : 'Want to Know More About Us?'}
-          </h2>
-          <p className="text-lg text-gray-600 mb-8">
-            {isRTL ? 'نحن هنا للإجابة على جميع أسئلتك ومساعدتك في احتياجاتك التجارية.' : 'We are here to answer all your questions and help with your business needs.'}
-          </p>
-          <Link
-            to="/contact"
-            className={`inline-flex items-center gap-2 px-8 py-4 bg-blue-900 text-white rounded-xl font-semibold hover:bg-blue-800 transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
-          >
-            {t('contactBtn')}
-            <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
-          </Link>
-        </div>
-      </section>
-    </div>
+    </>
   );
-};
-
-export default AboutPage;
+}

@@ -1,57 +1,71 @@
 <!doctype html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0c2f38" />
 
-  <title>Mosha for Trading & Investment Co. Ltd.</title>
-  <meta name="description" content="Mosha for Trading & Investment Co. Ltd. - Your trusted partner in global trade. Heavy Machinery, Medical Supplies and General Goods." />
-  <meta name="keywords" content="Mosha, trading, import, export, heavy machinery, medical supplies, generators, Sudan" />
+  <title>شركة موشا للتجارة والاستثمار | Mosha for Trading & Investment</title>
+  <meta name="description" content="شركة موشا للتجارة والاستثمار المحدودة – السودان. استيراد وتصدير الآليات الثقيلة، المستلزمات الطبية، المعدات الزراعية، التعدين والطاقة. Mosha for Trading & Investment Co. Ltd. – your trusted partner in global trade." />
+  <meta name="keywords" content="موشا, شركة موشا, استيراد وتصدير السودان, آليات ثقيلة, مستلزمات طبية, مولدات, Mosha, trading, import, export, heavy machinery, medical supplies, generators, Sudan, Khartoum" />
+  <link rel="canonical" href="https://www.moshaltd.com/" />
 
-  <!-- Favicon -->
-  <link rel="icon" href="/favicon.ico" />
+  <!-- Open Graph / WhatsApp / Facebook / X previews -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Mosha for Trading & Investment" />
+  <meta property="og:url" content="https://www.moshaltd.com/" />
+  <meta property="og:title" content="شركة موشا للتجارة والاستثمار | Mosha Trading & Investment" />
+  <meta property="og:description" content="شريكك الموثوق في التجارة العالمية – آليات ثقيلة، مستلزمات طبية، طاقة، زراعة وتعدين." />
+  <meta property="og:image" content="https://www.moshaltd.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ar_SD" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://www.moshaltd.com/og-image.png" />
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/icon-512.png" />
+  <link rel="manifest" href="/site.webmanifest" />
 
-  <!-- Google Consent Mode (EU) -->
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+  <!-- Fonts: Inter (English) + IBM Plex Sans Arabic (Arabic) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-    gtag('consent', 'default', {
-      ad_storage: 'denied',
-      ad_user_data: 'denied',
-      ad_personalization: 'denied',
-      analytics_storage: 'denied',
-      region: [
-        'AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR',
-        'HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK',
-        'SI','ES','SE','IS','LI','NO','GB'
-      ]
-    });
-
-    gtag('consent', 'default', {
-      ad_storage: 'granted',
-      ad_user_data: 'granted',
-      ad_personalization: 'granted',
-      analytics_storage: 'granted'
-    });
+  <!-- Structured data for Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Mosha for Trading & Investment Co. Ltd.",
+    "alternateName": "شركة موشا للتجارة والاستثمار المحدودة",
+    "url": "https://www.moshaltd.com",
+    "logo": "https://www.moshaltd.com/logo.png",
+    "email": "info@moshaltd.com",
+    "telephone": "+249901388888",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Alengaz Street, Bahri",
+      "addressLocality": "Khartoum",
+      "addressCountry": "SD"
+    }
+  }
   </script>
 
   <!-- Google Analytics -->
+  <script src="/analytics.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3Y398QSQYR"></script>
-  <script>
-    gtag('js', new Date());
-    gtag('config', 'G-3Y398QSQYR');
-  </script>
-
 </head>
 
 <body>
   <div id="root"></div>
+  <noscript>
+    <h1>شركة موشا للتجارة والاستثمار المحدودة – Mosha for Trading &amp; Investment Co. Ltd.</h1>
+    <p>استيراد وتصدير الآليات الثقيلة والمستلزمات الطبية والسلع العامة – الخرطوم، السودان.</p>
+    <p>Phone: +249 901 388 888 – Email: info@moshaltd.com</p>
+  </noscript>
   <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>

@@ -1,68 +1,48 @@
+/** Row in the `products` table (column names match the database exactly). */
 export interface Product {
   id: number | string;
-
   name: string;
-  nameAr: string;
-
-  description: string;
-  descriptionAr: string;
-
-  details?: string;
-  detailsAr?: string;
-
+  namear?: string | null;
+  description?: string | null;
+  descriptionar?: string | null;
   category: string;
-  price?: string;
+  price?: string | null;
+  image?: string | null;
+  images?: string[] | string | null;
+  video?: string | null;
+  specifications?: string | null;
+  specificationsar?: string | null;
+  origin?: string | null;
+  created_at?: string;
+}
 
+/** Row in the `offers` table. */
+export interface Offer {
+  id: number;
+  title: string;
+  title_ar: string;
+  description: string;
+  description_ar: string;
   image: string;
-  images?: string[];
-  video?: string;
-
-  specifications?: string;
-  specificationsAr?: string;
-  origin?: string;
+  badge: string;
+  badge_ar: string;
+  price_old: string;
+  price_new: string;
+  starts_at: string | null;
+  ends_at: string | null;
+  is_active: boolean;
+  sort_order: number;
+  created_at: string;
 }
 
-// ⭐️ هذا هو الجزء الناقص اللي سبب المشكلة
-export interface Category {
-  value: string;
-  label: string;
-  labelAr: string;
+/** Row in the `messages` table. */
+export interface ContactMessage {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  subject: string;
+  message: string;
+  is_read: boolean;
+  created_at: string;
 }
-
-export const CATEGORIES: Category[] = [
-  {
-    value: "engineering",
-    label: "Engineering",
-    labelAr: "الهندسة"
-  },
-  {
-    value: "medical-supplies",
-    label: "Medical Supplies",
-    labelAr: "المستلزمات الطبية"
-  },
-  {
-    value: "agriculture",
-    label: "Agriculture",
-    labelAr: "الزراعة"
-  },
-  {
-    value: "mining",
-    label: "Mining",
-    labelAr: "التعدين"
-  },
-  {
-    value: "energy",
-    label: "Energy",
-    labelAr: "الطاقة"
-  },
-  {
-    value: "import-export",
-    label: "Import & Export",
-    labelAr: "الاستيراد والتصدير"
-  },
-  {
-    value: "heavy-machinery",
-    label: "Heavy Machinery",
-    labelAr: "المعدات الثقيلة"
-  }
-];
