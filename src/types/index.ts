@@ -57,6 +57,8 @@ export interface HeroSlide {
   subtitle_ar: string;
   product_id: number | null;
   link: string;
+  /** Part of the picture kept visible when cropped (column added by 003_hero_focus.sql) */
+  focus?: 'center' | 'top' | 'bottom' | 'left' | 'right';
   sort_order: number;
   is_active: boolean;
   created_at: string;

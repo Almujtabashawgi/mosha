@@ -9,7 +9,7 @@ import { useTable } from '../hooks/useTable';
 import ProductCard from '../components/ProductCard';
 import ProductModal from '../components/ProductModal';
 import OfferCard from '../components/OfferCard';
-import HeroSlider, { HeroSliderSkeleton, type SlideView } from '../components/HeroSlider';
+import HeroSlider, { HeroSliderSkeleton, ScrollCue, type SlideView } from '../components/HeroSlider';
 import { LogoMark, Reveal, SectionHeading, Skeleton, WhatsAppIcon } from '../components/ui';
 
 export default function HomePage() {
@@ -39,6 +39,7 @@ export default function HomePage() {
           subtitle: pick(s.subtitle, s.subtitle_ar) || (product ? tr(product).description : ''),
           product,
           link: s.link || undefined,
+          focus: s.focus,
         };
       })
       .filter((x): x is SlideView => x !== null);
@@ -65,11 +66,15 @@ export default function HomePage() {
 
   return (
     <>
-      {/* ============================== HERO ============================== */}
-      {heroLoading ? <HeroSliderSkeleton /> : slides.length > 0 ? <HeroSlider slides={slides} onOpenProduct={setSelected} /> : <BrandHero />}
+      {/* ============================== HERO (full-screen cover) ============================== */}
+      {/* The cover stays put while the rest of the page slides up over it */}
+      <div className="sticky top-0 z-0 h-[100svh] min-h-[600px]">
+        {heroLoading ? <HeroSliderSkeleton /> : slides.length > 0 ? <HeroSlider slides={slides} onOpenProduct={setSelected} /> : <BrandHero />}
+      </div>
 
+      <div className="relative z-10 rounded-t-[2rem] bg-white shadow-[0_-24px_60px_-12px_rgb(6_18_27/0.45)] sm:rounded-t-[2.5rem]">
       {/* ============================== STATS ============================== */}
-      <section className="container relative z-10 -mt-16 sm:-mt-20">
+      <section className="container relative pt-10 sm:pt-14">
         <div className="card grid grid-cols-2 divide-slate-100 p-2 sm:p-4 lg:grid-cols-4 lg:divide-x lg:rtl:divide-x-reverse">
           {stats.map((s, i) => (
             <Reveal key={s.label} delay={i * 80} className="flex flex-col items-center gap-2 px-3 py-6 text-center">
@@ -205,6 +210,8 @@ export default function HomePage() {
         </Reveal>
       </section>
 
+      </div>
+
       {selected && <ProductModal product={selected} onClose={() => setSelected(null)} />}
     </>
   );
@@ -274,12 +281,12 @@ function BrandHero() {
   const { t, isAr } = useLang();
   const Arrow = isAr ? ArrowLeft : ArrowRight;
   return (
-      <section className="relative isolate overflow-hidden bg-ink text-white">
+      <section className="relative isolate h-full overflow-hidden bg-ink text-white">
         <div className="bg-grid absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_75%)]" />
         <div className="absolute -top-32 end-[-10%] -z-10 h-[520px] w-[520px] rounded-full bg-brand-500/30 blur-[120px]" />
         <div className="absolute bottom-[-20%] start-[-10%] -z-10 h-[420px] w-[420px] rounded-full bg-cyan-400/10 blur-[100px]" />
 
-        <div className="container grid min-h-[100svh] items-center gap-12 pb-28 pt-32 lg:grid-cols-12 lg:pb-36 lg:pt-28">
+        <div className="container grid h-[100svh] min-h-[600px] items-center gap-12 pb-28 pt-28 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <p className="inline-flex animate-fade-up items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm font-medium text-brand-200 backdrop-blur">
               <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgb(52_211_153/0.2)]" />
@@ -329,6 +336,7 @@ function BrandHero() {
             </div>
           </div>
         </div>
+        <ScrollCue />
       </section>
   );
 }

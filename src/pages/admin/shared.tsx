@@ -87,8 +87,8 @@ export function FieldGroup({ title, children }: { title: string; children: React
 }
 
 /* ------------------------------- Image upload ------------------------------- */
-async function uploadOne(file: File, folder: string) {
-  const blob = await optimizeImage(file);
+async function uploadOne(file: File, folder: string, maxSide?: number) {
+  const blob = await optimizeImage(file, maxSide);
   const path = storagePath(folder, blob);
   const { error } = await supabase.storage.from(STORAGE_BUCKET).upload(path, blob, {
     contentType: blob.type || file.type,
@@ -105,12 +105,15 @@ export function ImageUploader({
   multiple = false,
   folder,
   onMakeMain,
+  maxSide,
 }: {
   value: string[];
   onChange: (urls: string[]) => void;
   multiple?: boolean;
   folder: string;
   onMakeMain?: (url: string) => void;
+  /** Longest side after resizing (default 1920px) */
+  maxSide?: number;
 }) {
   const { t } = useLang();
   const toast = useToast();
@@ -127,7 +130,7 @@ export function ImageUploader({
     const urls: string[] = [];
     for (const f of list) {
       try {
-        urls.push(await uploadOne(f, folder));
+        urls.push(await uploadOne(f, folder, maxSide));
       } catch (e) {
         toast('error', t('admin.uploadFailed', { msg: (e as Error).message }));
       }

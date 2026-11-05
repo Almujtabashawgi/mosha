@@ -7,6 +7,7 @@ import { useLang } from '../../hooks/useLang';
 import { useTable } from '../../hooks/useTable';
 import { SafeImg, Spinner } from '../../components/ui';
 import { errorText, Field, FieldGroup, ImageUploader, Modal, useToast } from './shared';
+import { FOCUS_CLASS, type Focus } from '../../components/HeroSlider';
 
 type Form = {
   image: string;
@@ -16,10 +17,13 @@ type Form = {
   subtitle_ar: string;
   product_id: string; // '' = none (select value)
   link: string;
+  focus: Focus;
   is_active: boolean;
 };
 
-const EMPTY: Form = { image: '', title: '', title_ar: '', subtitle: '', subtitle_ar: '', product_id: '', link: '', is_active: true };
+const EMPTY: Form = { image: '', title: '', title_ar: '', subtitle: '', subtitle_ar: '', product_id: '', link: '', focus: 'center', is_active: true };
+const FOCUSES: Focus[] = ['center', 'top', 'bottom', 'left', 'right'];
+const isMissingFocus = (msg: string) => /focus/i.test(msg) && /column|schema cache/i.test(msg);
 
 const isMissingTable = (msg: string) => /relation .* does not exist|Could not find the table|schema cache/i.test(msg);
 
@@ -115,7 +119,7 @@ export default function HeroManager() {
                 <span className="w-6 shrink-0 text-center text-sm font-bold text-slate-400" dir="ltr">
                   {i + 1}
                 </span>
-                <SafeImg src={s.image || p?.image || undefined} alt="" className="aspect-[4/3] w-24 shrink-0 rounded-xl bg-slate-100 object-contain sm:w-32" />
+                <SafeImg src={s.image || p?.image || undefined} alt="" className={`aspect-video w-28 shrink-0 rounded-xl bg-slate-100 object-cover sm:w-40 ${FOCUS_CLASS[s.focus ?? 'center']}`} />
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-bold text-ink">{titleOf(s)}</p>
                   <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
@@ -221,6 +225,7 @@ function SlideForm({
           subtitle_ar: initial.subtitle_ar,
           product_id: initial.product_id != null ? String(initial.product_id) : '',
           link: initial.link,
+          focus: initial.focus ?? 'center',
           is_active: initial.is_active,
         }
       : EMPTY,
@@ -263,15 +268,25 @@ function SlideForm({
       subtitle_ar: f.subtitle_ar.trim().slice(0, 400),
       product_id: f.product_id ? Number(f.product_id) : null,
       link: f.product_id ? '' : f.link,
+      focus: f.focus,
       is_active: f.is_active,
       ...(initial ? {} : { sort_order: nextOrder }),
     };
-    const { error } = initial
-      ? await supabase.from('hero_slides').update(payload).eq('id', initial.id)
-      : await supabase.from('hero_slides').insert([payload]);
+    const save = (data: Record<string, unknown>) =>
+      initial ? supabase.from('hero_slides').update(data).eq('id', initial.id) : supabase.from('hero_slides').insert([data]);
+    let { error } = await save(payload);
+    let focusSkipped = false;
+    if (error && isMissingFocus(error.message)) {
+      // 003_hero_focus.sql not run yet: save everything except the position
+      const rest: Record<string, unknown> = { ...payload };
+      delete rest.focus;
+      ({ error } = await save(rest));
+      focusSkipped = !error;
+    }
     setSaving(false);
     if (error) return toast('error', isMissingTable(error.message) ? t('admin.heroSetupNeeded') : errorText(t, error.message));
     toast('ok', t('admin.saved'));
+    if (focusSkipped && f.focus !== 'center') toast('error', t('admin.focusSetupNeeded'));
     onSaved();
   };
 
@@ -305,7 +320,37 @@ function SlideForm({
 
         <FieldGroup title={t('admin.mainImage')}>
           <div className="sm:col-span-2">
-            <ImageUploader folder="hero" value={f.image ? [f.image] : []} onChange={(u) => setF((x) => ({ ...x, image: u[0] ?? '' }))} />
+            <ImageUploader folder="hero" maxSide={2560} value={f.image ? [f.image] : []} onChange={(u) => setF((x) => ({ ...x, image: u[0] ?? '' }))} />
+            {f.image && (
+              <div className="mt-4">
+                <span className="label">{t('admin.focus')}</span>
+                <div className="flex flex-wrap gap-2">
+                  {FOCUSES.map((fc) => (
+                    <button
+                      key={fc}
+                      type="button"
+                      onClick={() => setF((x) => ({ ...x, focus: fc }))}
+                      className={`rounded-full border px-4 py-1.5 text-sm font-semibold transition ${
+                        f.focus === fc ? 'border-brand-600 bg-brand-600 text-white' : 'border-slate-300 text-slate-700 hover:border-brand-400'
+                      }`}
+                    >
+                      {t(`admin.focusOptions.${fc}`)}
+                    </button>
+                  ))}
+                </div>
+                <p className="mt-3 text-xs text-slate-500">{t('admin.previewHint')}</p>
+                <div className="mt-2 flex items-end gap-3">
+                  <div className="relative aspect-video flex-1 overflow-hidden rounded-xl bg-ink">
+                    <img src={f.image} alt="" className={`h-full w-full object-cover ${FOCUS_CLASS[f.focus]}`} />
+                    <span className="chip absolute bottom-2 start-2 bg-ink/70 text-white">{t('admin.previewDesktop')}</span>
+                  </div>
+                  <div className="relative aspect-[9/16] w-24 shrink-0 overflow-hidden rounded-xl bg-ink sm:w-28">
+                    <img src={f.image} alt="" className={`h-full w-full object-cover ${FOCUS_CLASS[f.focus]}`} />
+                    <span className="chip absolute bottom-2 start-2 bg-ink/70 text-white">{t('admin.previewPhone')}</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </FieldGroup>
 
