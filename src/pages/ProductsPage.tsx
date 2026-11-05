@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, X } from 'lucide-react';
 import type { Product } from '../types';
@@ -28,6 +28,23 @@ export default function ProductsPage() {
   const category = params.get('category') ?? 'all';
   const query = params.get('q') ?? '';
   const [selected, setSelected] = useState<Product | null>(null);
+
+  // Open a product directly from a link like /products?product=12
+  const productParam = params.get('product');
+  useEffect(() => {
+    if (!productParam || !rows.length) return;
+    const p = rows.find((r) => String(r.id) === productParam);
+    if (p) setSelected(p);
+  }, [productParam, rows]);
+
+  const closeProduct = () => {
+    setSelected(null);
+    if (productParam) {
+      const next = new URLSearchParams(params);
+      next.delete('product');
+      setParams(next, { replace: true });
+    }
+  };
 
   const update = (key: 'category' | 'q', value: string) => {
     const next = new URLSearchParams(params);
@@ -134,7 +151,7 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {selected && <ProductModal product={selected} onClose={() => setSelected(null)} />}
+      {selected && <ProductModal product={selected} onClose={closeProduct} />}
     </>
   );
 }

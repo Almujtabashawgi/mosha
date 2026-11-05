@@ -54,11 +54,16 @@ export default {
           '50%': { transform: 'translateY(-10px)' },
         },
         'spin-slow': { to: { transform: 'rotate(360deg)' } },
+        // grows into place from slightly smaller, so poster text at the edges is never cropped
+        kenburns: { from: { transform: 'scale(0.94)' }, to: { transform: 'scale(1)' } },
+        progress: { from: { transform: 'scaleX(0)' }, to: { transform: 'scaleX(1)' } },
       },
       animation: {
         'fade-up': 'fade-up .6s cubic-bezier(.2,.7,.2,1) both',
         float: 'float 6s ease-in-out infinite',
         'spin-slow': 'spin-slow 60s linear infinite',
+        kenburns: 'kenburns 7s cubic-bezier(.2,.7,.2,1) both',
+        progress: 'progress 6.5s linear both',
       },
     },
   },

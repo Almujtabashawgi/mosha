@@ -1,4 +1,5 @@
 import type { Product } from '../types';
+import { supabase, STORAGE_BUCKET } from './supabase';
 
 /* ----------------------------- Images ----------------------------- */
 
@@ -60,6 +61,32 @@ export function productImages(p: Pick<Product, 'image' | 'images'>): string[] {
   }
   const all = [p.image ?? '', ...list].map((s) => String(s).trim()).filter((s) => /^https?:\/\//.test(s));
   return Array.from(new Set(all));
+}
+
+/** True for images in our storage bucket that were uploaded before automatic optimisation. */
+export const isUnoptimizedImage = (url?: string | null) =>
+  !!url && url.includes(`/storage/v1/object/public/${STORAGE_BUCKET}/`) && !/\.webp(\?|$)/i.test(url);
+
+/**
+ * Download a stored image, shrink it to WebP and upload the new copy.
+ * Returns the new public URL and bytes saved, or null if it couldn't be made smaller.
+ * The original file is left in storage as a backup.
+ */
+export async function reoptimizeStoredImage(url: string, folder = 'products'): Promise<{ url: string; saved: number } | null> {
+  const res = await fetch(url, { cache: 'no-store' });
+  if (!res.ok) throw new Error(`download ${res.status}`);
+  const original = await res.blob();
+  const file = new File([original], 'image', { type: original.type || 'image/jpeg' });
+  const blob = await optimizeImage(file);
+  if (blob === file || blob.size >= original.size * 0.9) return null; // not worth it
+  const path = storagePath(folder, blob);
+  const { error } = await supabase.storage.from(STORAGE_BUCKET).upload(path, blob, {
+    contentType: blob.type,
+    cacheControl: '31536000',
+    upsert: false,
+  });
+  if (error) throw error;
+  return { url: supabase.storage.from(STORAGE_BUCKET).getPublicUrl(path).data.publicUrl, saved: original.size - blob.size };
 }
 
 /* ----------------------------- YouTube ----------------------------- */

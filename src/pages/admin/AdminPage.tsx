@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BadgePercent, ExternalLink, Inbox, Languages, LogOut, Package, ShieldCheck } from 'lucide-react';
+import { BadgePercent, ExternalLink, Images, Inbox, Languages, LogOut, Package, ShieldCheck } from 'lucide-react';
 import { useAdmin } from '../../hooks/useAdmin';
 import { useLang } from '../../hooks/useLang';
 import { useSeo } from '../../hooks/useSeo';
@@ -9,8 +9,9 @@ import { ToastProvider } from './shared';
 import ProductsManager from './ProductsManager';
 import OffersManager from './OffersManager';
 import MessagesInbox from './MessagesInbox';
+import HeroManager from './HeroManager';
 
-type Tab = 'products' | 'offers' | 'messages';
+type Tab = 'products' | 'offers' | 'hero' | 'messages';
 
 export default function AdminPage() {
   const { t, toggle } = useLang();
@@ -64,6 +65,7 @@ export default function AdminPage() {
   const tabs: { id: Tab; icon: typeof Package; label: string }[] = [
     { id: 'products', icon: Package, label: t('admin.tabs.products') },
     { id: 'offers', icon: BadgePercent, label: t('admin.tabs.offers') },
+    { id: 'hero', icon: Images, label: t('admin.heroTab') },
     { id: 'messages', icon: Inbox, label: t('admin.tabs.messages') },
   ];
 
@@ -122,6 +124,7 @@ export default function AdminPage() {
         <main className="container py-8">
           {tab === 'products' && <ProductsManager />}
           {tab === 'offers' && <OffersManager />}
+          {tab === 'hero' && <HeroManager />}
           {tab === 'messages' && <MessagesInbox />}
         </main>
       </div>

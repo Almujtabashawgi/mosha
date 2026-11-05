@@ -1,9 +1,9 @@
 import { useMemo, useState, type FormEvent } from 'react';
-import { Pencil, Plus, Search, Trash2 } from 'lucide-react';
+import { Pencil, Plus, Search, Sparkles, Trash2 } from 'lucide-react';
 import type { Product } from '../../types';
 import { supabase } from '../../lib/supabase';
 import { getSector, SECTORS } from '../../config/site';
-import { productImages, youtubeId } from '../../lib/media';
+import { isUnoptimizedImage, productImages, reoptimizeStoredImage, youtubeId } from '../../lib/media';
 import { useLang } from '../../hooks/useLang';
 import { useTable } from '../../hooks/useTable';
 import { SafeImg, Spinner } from '../../components/ui';
@@ -74,6 +74,61 @@ export default function ProductsManager() {
     );
   }, [rows, q, cat]);
 
+  // ----- Shrink old, heavy images (uploaded before automatic optimisation) -----
+  const heavy = useMemo(() => rows.filter((p) => productImages(p).some(isUnoptimizedImage)), [rows]);
+  const heavyCount = useMemo(() => heavy.reduce((n, p) => n + productImages(p).filter(isUnoptimizedImage).length, 0), [heavy]);
+  const [optimizing, setOptimizing] = useState<{ done: number; total: number } | null>(null);
+
+  const optimizeAll = async () => {
+    if (optimizing || !window.confirm(t('admin.optimizeConfirm', { count: heavyCount }))) return;
+    let done = 0;
+    let converted = 0;
+    let saved = 0;
+    const replaced = new Map<string, string>(); // old URL -> new URL
+    setOptimizing({ done, total: heavyCount });
+    const swap = async (url: string) => {
+      try {
+        const r = await reoptimizeStoredImage(url);
+        if (r) {
+          converted += 1;
+          saved += r.saved;
+          replaced.set(url, r.url);
+          return r.url;
+        }
+      } catch (e) {
+        console.error('optimize failed', url, e);
+      } finally {
+        done += 1;
+        setOptimizing({ done, total: heavyCount });
+      }
+      return url;
+    };
+    for (const p of heavy) {
+      const image = p.image && isUnoptimizedImage(p.image) ? await swap(p.image) : p.image;
+      let images = p.images;
+      if (Array.isArray(p.images)) {
+        const next: string[] = [];
+        for (const u of p.images) next.push(isUnoptimizedImage(u) ? await swap(u) : u);
+        images = next;
+      }
+      if (image !== p.image || JSON.stringify(images) !== JSON.stringify(p.images)) {
+        const { error } = await supabase.from('products').update({ image, images }).eq('id', p.id);
+        if (error) toast('error', errorText(t, error.message));
+      }
+    }
+    // Homepage slides that copied an old image URL get the new one too
+    if (replaced.size) {
+      const { data: slides } = await supabase.from('hero_slides').select('id,image');
+      for (const sl of (slides ?? []) as { id: number; image: string }[]) {
+        const next = replaced.get(sl.image);
+        if (next) await supabase.from('hero_slides').update({ image: next }).eq('id', sl.id);
+      }
+    }
+    setOptimizing(null);
+    toast('ok', t('admin.optimizeDone', { count: converted, mb: (saved / 1048576).toFixed(1) }));
+    refresh();
+  };
+
   const remove = async (p: Product) => {
     if (!window.confirm(t('admin.confirmDelete', { name: tr(p).name }))) return;
     const { error } = await supabase.from('products').delete().eq('id', p.id);
@@ -104,6 +159,19 @@ export default function ProductsManager() {
           {t('admin.addProduct')}
         </button>
       </div>
+
+      {heavyCount > 0 && (
+        <div className="card mb-6 flex flex-col gap-4 border-amber-200 bg-amber-50 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <p className="flex items-start gap-3 text-sm leading-7 text-amber-900">
+            <Sparkles className="mt-1 h-5 w-5 shrink-0" />
+            {t('admin.optimizeHint', { count: heavyCount })}
+          </p>
+          <button type="button" onClick={optimizeAll} disabled={!!optimizing} className="btn-dark shrink-0">
+            {optimizing ? <Spinner /> : <Sparkles className="h-5 w-5" />}
+            {optimizing ? t('admin.optimizing', { done: optimizing.done, total: optimizing.total }) : t('admin.optimizeNow')}
+          </button>
+        </div>
+      )}
 
       {loading ? (
         <div className="grid place-items-center py-20 text-brand-600">

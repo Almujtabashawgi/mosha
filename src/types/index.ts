@@ -46,3 +46,18 @@ export interface ContactMessage {
   is_read: boolean;
   created_at: string;
 }
+
+/** Row in the `hero_slides` table (homepage slider). */
+export interface HeroSlide {
+  id: number;
+  image: string;
+  title: string;
+  title_ar: string;
+  subtitle: string;
+  subtitle_ar: string;
+  product_id: number | null;
+  link: string;
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
+}
