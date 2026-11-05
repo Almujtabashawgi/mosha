@@ -111,7 +111,7 @@ export default function ContactPage() {
               <span>
                 <span className="block text-lg font-bold">{t('common.chatWhatsapp')}</span>
                 <span className="block text-sm text-white/85" dir="ltr">
-                  {SITE.contact.phone}
+                  {SITE.contact.whatsappDisplay}
                 </span>
               </span>
             </a>
