@@ -34,6 +34,10 @@ export default function OffersPage() {
                 {t('common.chatWhatsapp')}
               </a>
             </div>
+          ) : rows.length === 1 ? (
+            <Reveal className="mx-auto max-w-5xl">
+              <OfferCard offer={rows[0]} layout="wide" />
+            </Reveal>
           ) : (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {rows.map((o, i) => (

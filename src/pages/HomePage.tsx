@@ -279,6 +279,9 @@ function OffersStrip({ offers }: { offers: Offer[] }) {
             }
           />
         </Reveal>
+        {offers.length === 1 ? (
+          <OfferCard offer={offers[0]} layout="wide" />
+        ) : (
         <div ref={track} className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth px-4 pb-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0">
           {offers.map((o) => (
             <div key={o.id} data-card className="w-[85%] shrink-0 snap-start sm:w-[46%] lg:w-[calc((100%-48px)/3)]">
@@ -286,6 +289,7 @@ function OffersStrip({ offers }: { offers: Offer[] }) {
             </div>
           ))}
         </div>
+        )}
       </div>
     </section>
   );
