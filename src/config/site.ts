@@ -24,8 +24,8 @@ export const SITE = {
     phone: '+249 901 388 888',
     phoneHref: '+249901388888',
     /** International format without + or spaces, used for wa.me links */
-    whatsapp: '249901343333',
-    whatsappDisplay: '+249 901 343 333',
+    whatsapp: '249901388888',
+    whatsappDisplay: '+249 901 388 888',
     address: { en: 'Alengaz Street, Bahri, Khartoum, Sudan', ar: 'شارع الإنقاذ، بحري، الخرطوم، السودان' },
     hours: { en: 'Sunday – Thursday: 8:00 AM – 6:00 PM', ar: 'الأحد – الخميس: 8:00 صباحاً – 6:00 مساءً' },
     mapQuery: 'Bahri, Khartoum North, Sudan',
